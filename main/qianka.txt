@@ -1,0 +1,10 @@
+#LWP-Cookies-2.0
+Set-Cookie3: DIS4="78d05c1aea4a428fb09c7c619ddf1868"; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: _umdata="GFF8A5D8C9C1C050D09AC60C533C1570A19850F"; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: lite_token="e2a1a0202d9b7fb08e472561815ae919"; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: _uab_collina="155359650568835048721976"; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: ln=1; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: lu=62651093; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: user_redirct_subtask_list=1; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: Hm_lpvt_484788504bd0bc163a54b110d0dc003c=1553739711; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0
+Set-Cookie3: Hm_lvt_484788504bd0bc163a54b110d0dc003c="1553692422,1553695757,1553726916,1553739711"; path="/"; domain=".qianka.com"; path_spec; domain_dot; expires="2029-03-25 13:38:15Z"; version=0

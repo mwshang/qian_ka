@@ -1,0 +1,5 @@
+
+REFRESH_TASK_MIN_DELTA_TIME = 5 # 刷新任务列表最小间隔时间
+REFRESH_TASK_MAX_DELTA_TIME = 300 # 刷新任务最大间隔时间
+
+RUN_DELTA = 1
