@@ -5,21 +5,41 @@ import json
 import logging
 import time
 import threading
+import functools
 from main.config import *
-import sys
+from main.vo import *
+from main.actions import *
+from main.actionmanager import ActionManager
+
 
 logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-# logger.info("Start print log")
-# logger.debug("Do something")
-# logger.warning("Something maybe fail.")
-# logger.info("Finish")
 
 def threadCB(self,task):
     # logger.info(threading.current_thread().getName() + "   -----   ")
     self.acceptTask(task)
 
+# 当数据大于QTY_REWARD_THRESHOLD值时,按奖励倒序排列,否则按数量倒序排序
+def sorCallback(t1,t2):
+    a = t1.get("task")
+    b = t2.get("task")
+    qty1 = a.qty
+    qty2 = b.qty
+
+    # if qty1 > QTY_REWARD_THRESHOLD and qty2 > QTY_REWARD_THRESHOLD:
+    #     reward1 = a.reward
+    #     reward2 = b.reward
+    #     if reward1 > reward2:
+    #         return -1
+    # el
+    if qty1 > qty2:
+        return -1
+    elif qty1 == qty2:
+        reward1 = a.reward
+        reward2 = b.reward
+        if reward1 > reward2:
+            return -1
+    return 0
 
 class SubTaskList(object):
     def __init__(self,session=None):
@@ -35,6 +55,10 @@ class SubTaskList(object):
         self.stdTasks = [] # 标准任务
         self.incomingTasks = [] #预告任务
         self.incomingStartDates = {}#预告开始时间 key=开始时间,值为任务ID数组
+
+        self.incomingListeners = []
+        self.am = ActionManager()
+        self.am.start()
 
         self.lastRefreshTime = 0
 
@@ -55,9 +79,6 @@ class SubTaskList(object):
         self.session.cookies.load()
         response = self.session.get(self.task_url, headers=self.headers)
 
-    def _onSortQty(self):
-        return self.get("qty")
-
     def _handleRefreshResponse(self,response):
         #标准任务
         tasks = response['payload']['tasks']
@@ -65,6 +86,7 @@ class SubTaskList(object):
         #预告任务
         incomingTasks = response['payload']['incoming']
         self._initIncomingTasks(incomingTasks)
+        self._setIncomingListeners()
 
     def _initStdTasks(self,tasks):
         if tasks:
@@ -79,29 +101,81 @@ class SubTaskList(object):
                 else:
                     self.stdTasks.append(vo)
 
-            self.stdTasks = sorted(self.stdTasks,key=SubTaskList._onSortQty,reverse=True)
+            self.stdTasks = sorted(self.stdTasks,key=lambda task:task.qty,reverse=True)
 
+    # 初始化预告任务
     def _initIncomingTasks(self,tasks):
         if tasks:
             self.incomingStartDates = {}
+            self.incomingTasks = []
+            for task in tasks:
+                vo = IncomingTaskVO()
+                vo.fill(task)
+                self.incomingTasks.append(vo)
+                sdKey = vo.getStartDateKey()
+                if self.incomingStartDates.get(sdKey) == None:
+                    self.incomingStartDates[sdKey] = []
+
+                self.incomingStartDates[sdKey].append({'task':vo})
+
+             if False:
+                for k in self.incomingStartDates:
+                    tasks = self.incomingStartDates[k]
+                    tasks.sort(key=functools.cmp_to_key(sorCallback))
+                for k in self.incomingStartDates:
+                    tasks = self.incomingStartDates[k]
+                    print("+++++++++++++++++++++++")
+                    for v in tasks:
+                        t = v.get("task")
+                        print(t.qty,t.reward)
+                print("--------------------------")
+
+            self.incomingTasks = sorted(self.incomingTasks,key=lambda task:task.getStartDateKey())
+
+    def _timeCB(self,tasks,key):
+        # Caller
+        # 到达指定时间后,请求指定的任务
+        tasks.sort(key=functools.cmp_to_key(sorCallback))
+        # BatchExecutAction
+        action = BatchAcceptTaskAction(tasks)
+        self.am.addAction(action)
+
+    def _setIncomingListeners(self):
+        self._clearIncomingListeners()
+        self.incomingListeners = []
+        for k in self.incomingStartDates:
+            tasks = self.incomingStartDates[k]
+            if len(tasks) > 0:
+                curStr = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                nextStr = curStr.split(" ")[0] + " " + k + ":00"
+                nt = time.mktime(time.strptime(nextStr, '%Y-%m-%d %H:%M:%S'))
+                dt = nt - time.time()
+                if dt > 0:
+                    timer = threading.Timer(1, self._timeCB, (tasks,k))
+                    timer.start()
+                    self.incomingListeners.append({'timer':timer,"key":k})
+
+    def _clearIncomingListeners(self):
+        for k,v in self.incomingListeners:
+            v['timer'].cancel()
+        self.incomingListeners = []
 
     def run(self):
         while True:
             if self.runningTask == None:
                 self.acceptATask()
-                time.sleep(RUN_DELTA)
             else:
-                time.sleep(1)
+                pass
+            self.am.tick()
+            time.sleep(PER_FRAME_TIME)
 
-            logger.info("run----------")
+            # logger.info("run----------" + str(int(time.time())))
             # sys.stdout.flush()
 
-
-
-    def acceptATask(self):# 接受任务
+    def acceptATask(self,batch=2):# 接受任务
         task = self.getHighQtyATask()
         if task:
-            for i in range(1, 5):
+            for i in range(1, batch):
                 t = threading.Thread(target=threadCB, args=(self,task))
                 t.start()
         else:
@@ -148,36 +222,46 @@ class SubTaskList(object):
                 break
         return task
 
-class TaskVO(dict):
-    def __int__(self):
-        self.id = 0  # 每次的ID可能不一样
-        self.is_quality = 0 # 如果为付费应用,这儿显示的1,不是显示的0
-        self.zs_reward = "0.00"
-        self.status = 1 # //2表示正在进行任务
-        self.icon = None # 图标
-        self.is_pay = 0 #当为付费应用时,这里显示的1,不是显示的为0
-        self.bid = None
-        self.appstore_cost = 0 # //应用需要下载的价格
-        self.title = None # "百***"
-        self.reward = 0 # 奖励 比如1.5
-        self.type = 1 # 1标准任务,4预告任务(incomming)
-        self.status_for_order = 1 #当status=2(正在进行的任务)时,这里为1,当status=1时,这儿显示的是2
-        self.qty = 0 # 数量
 
-    def fill(self,task):
-         for k in task:
-            self[k] = task[k]
+def sorCallback1(a,b):
+    qty1 = a.get("qty")
+    qty2 = b.get("qty")
 
-    def isRunning(self):
-        return self.get('status') == 2
-
-    def updateStatus(self,v):
-        self['status'] = v
-
-
+    if qty1 > 1000 and qty2 > 1000:
+        reward1 = a.get("reward")
+        reward2 = b.get("reward")
+        if reward1 > reward2:
+            return -1
+    elif qty1 > qty2:
+        return -1
+    elif qty1 == qty2:
+        reward1 = a.get("reward")
+        reward2 = b.get("reward")
+        if reward1 > reward2:
+            return -1
+    return 0
 if __name__ == '__main__':
     file = open('tasklist_data.json', 'r', encoding='utf-8')
     datas = json.load(file)
     subTaskList = SubTaskList()
     subTaskList._handleRefreshResponse(datas)
     subTaskList.run()
+
+    list = [
+        {"qty": 500, "reward": '1.2'},
+        {"qty": 1200, "reward": '3.2'},
+        {"qty": 700, "reward": '1.2'},
+        {"qty": 800, "reward": '1.2'},
+        {"qty": 400, "reward": '1.2'},
+        {"qty": 500, "reward": '1.2'},
+        {"qty": 1000, "reward": '1.2'},
+        {"qty": 500, "reward": '2.5'},
+        {"qty": 500, "reward": '1.5'},
+        {"qty": 500, "reward": '1.77'},
+        {"qty": 1500, "reward": '1.25'},
+        {"qty": 1500, "reward": '2.5'},
+        {"qty": 2500, "reward": '1.5'},
+    ]
+    # list = sorted(list,key=functools.cmp_to_key(sorCallback1))
+    # for t in list:
+    #     print(t.get('qty'),t.get('reward'))
