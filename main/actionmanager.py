@@ -23,7 +23,7 @@ class ActionManager:
     def _delAction(self,action):
         action.exit()
 
-    def tick(self):
+    def tick(self,delta):
         # logger.debug("begin tick..........")
         if self.curAction:
             if self.curAction.isFinished() == True:
@@ -41,3 +41,12 @@ class ActionManager:
             self.lastTickTime = time.time()
 
             # logger.debug("end tick..........")
+
+    def clear(self):
+        if self.curAction:
+            self.curAction.exit()
+            self.curAction = None
+            if len(self.actions) > 0:
+                for a in self.actions:
+                    a.exit()
+                self.actions = []

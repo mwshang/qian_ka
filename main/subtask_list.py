@@ -15,6 +15,7 @@ from main.actionmanager import ActionManager
 logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 def threadCB(self,task):
     # logger.info(threading.current_thread().getName() + "   -----   ")
     self.acceptTask(task)
@@ -46,119 +47,100 @@ class SubTaskList(object):
         self.session = session
         # 刷新任务列表请求
         self.task_url = "https://qianka.com/s4/lite.subtask.list"
-        # 接受任务请求
-        self.task_start = 'https://qianka.com/s4/lite.subtask.start?task_id={0}&quality={1}'
+        # # 接受任务请求
+        # self.task_start = 'https://qianka.com/s4/lite.subtask.start?task_id={0}&quality={1}'
         # 获取进行中的任务详情
         self.subtask_detail = 'https://qianka.com/s4/lite.subtask.detail?task_id={0}'
 
-        self.runningTask = None #正在进行的任务
-        self.stdTasks = [] # 标准任务
-        self.incomingTasks = [] #预告任务
-        self.incomingStartDates = {}#预告开始时间 key=开始时间,值为任务ID数组
 
-        self.incomingListeners = []
-        self.am = ActionManager()
-        self.am.start()
 
         self.lastRefreshTime = 0
 
-        if self.session == None:
-            self._initSession()
-        self.headers = {
-            "Host": "qianka.com",
-            "Connection": "keep-alive",
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16A366 version=1.1.2 ",
-            "Referer": "https://qianka.com/v4/tasks/lite",
-        }
+        # if self.session == None:
+        #     self._initSession()
+        # self.headers = {
+        #     "Host": "qianka.com",
+        #     "Connection": "keep-alive",
+        #     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16A366 version=1.1.2 ",
+        #     "Referer": "https://qianka.com/v4/tasks/lite",
+        # }
 
-    def _initSession(self):
-        self.session = requests.Session()
-        self.session.cookies = cookielib.LWPCookieJar(filename="qianka.txt")
+    # def _initSession(self):
+    #     self.session = requests.Session()
+    #     self.session.cookies = cookielib.LWPCookieJar(filename="qianka.txt")
 
-    def refresh(self):
-        self.session.cookies.load()
-        response = self.session.get(self.task_url, headers=self.headers)
+    # def refresh(self):
+    #     self.session.cookies.load()
+    #     response = self.session.get(self.task_url, headers=self.headers)
 
-    def _handleRefreshResponse(self,response):
-        #标准任务
-        tasks = response['payload']['tasks']
-        self._initStdTasks(tasks)
-        #预告任务
-        incomingTasks = response['payload']['incoming']
-        self._initIncomingTasks(incomingTasks)
-        self._setIncomingListeners()
+    # def _handleRefreshResponse(self,response):
+    #     #标准任务
+    #     tasks = response['payload']['tasks']
+    #     self._initStdTasks(tasks)
+    #     #预告任务
+    #     incomingTasks = response['payload']['incoming']
+    #     self._initIncomingTasks(incomingTasks)
+    #     self._setIncomingListeners()
 
-    def _initStdTasks(self,tasks):
-        if tasks:
-            self.runningTask = None  # 正在进行的任务
-            self.stdTasks = []  # 标准任务
+    # def _initStdTasks(self,tasks):
+    #     if tasks:
+    #         self.runningTask = None  # 正在进行的任务
+    #         self.stdTasks = []  # 标准任务
+    #
+    #         for task in tasks:
+    #             vo = TaskVO()
+    #             vo.fill(task)
+    #             if vo.isRunning():
+    #                 self.runningTask = vo
+    #             else:
+    #                 self.stdTasks.append(vo)
+    #
+    #         self.stdTasks = sorted(self.stdTasks,key=lambda task:task.qty,reverse=True)
 
-            for task in tasks:
-                vo = TaskVO()
-                vo.fill(task)
-                if vo.isRunning():
-                    self.runningTask = vo
-                else:
-                    self.stdTasks.append(vo)
+    # # 初始化预告任务
+    # def _initIncomingTasks(self,tasks):
+    #     if tasks:
+    #         self.incomingStartDates = {}
+    #         self.incomingTasks = []
+    #         for task in tasks:
+    #             vo = IncomingTaskVO()
+    #             vo.fill(task)
+    #             self.incomingTasks.append(vo)
+    #             sdKey = vo.getStartDateKey()
+    #             if self.incomingStartDates.get(sdKey) == None:
+    #                 self.incomingStartDates[sdKey] = []
+    #             self.incomingStartDates[sdKey].append({'task':vo})
+    #
+    #         self.incomingTasks = sorted(self.incomingTasks,key=lambda task:task.getStartDateKey())
 
-            self.stdTasks = sorted(self.stdTasks,key=lambda task:task.qty,reverse=True)
+    # def _timerCB(self,tasks,key):
+    #     # Caller
+    #     # 到达指定时间后,请求指定的任务
+    #     tasks.sort(key=functools.cmp_to_key(sorCallback))
+    #     # BatchExecutAction
+    #     action = BatchAcceptTaskAction(tasks)
+    #     self.am.addAction(action)
 
-    # 初始化预告任务
-    def _initIncomingTasks(self,tasks):
-        if tasks:
-            self.incomingStartDates = {}
-            self.incomingTasks = []
-            for task in tasks:
-                vo = IncomingTaskVO()
-                vo.fill(task)
-                self.incomingTasks.append(vo)
-                sdKey = vo.getStartDateKey()
-                if self.incomingStartDates.get(sdKey) == None:
-                    self.incomingStartDates[sdKey] = []
+    # # 添加预告任务定时器
+    # def _setIncomingListeners(self):
+    #     self._clearIncomingListeners()
+    #     self.incomingListeners = []
+    #     for k in self.incomingStartDates:
+    #         tasks = self.incomingStartDates[k]
+    #         if len(tasks) > 0:
+    #             curStr = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    #             nextStr = curStr.split(" ")[0] + " " + k + ":00"
+    #             nt = time.mktime(time.strptime(nextStr, '%Y-%m-%d %H:%M:%S'))
+    #             dt = nt - time.time()
+    #             if dt > 0:
+    #                 timer = threading.Timer(1, self._timerCB, (tasks,k))
+    #                 timer.start()
+    #                 self.incomingListeners.append({'timer':timer,"key":k})
 
-                self.incomingStartDates[sdKey].append({'task':vo})
-
-             if False:
-                for k in self.incomingStartDates:
-                    tasks = self.incomingStartDates[k]
-                    tasks.sort(key=functools.cmp_to_key(sorCallback))
-                for k in self.incomingStartDates:
-                    tasks = self.incomingStartDates[k]
-                    print("+++++++++++++++++++++++")
-                    for v in tasks:
-                        t = v.get("task")
-                        print(t.qty,t.reward)
-                print("--------------------------")
-
-            self.incomingTasks = sorted(self.incomingTasks,key=lambda task:task.getStartDateKey())
-
-    def _timeCB(self,tasks,key):
-        # Caller
-        # 到达指定时间后,请求指定的任务
-        tasks.sort(key=functools.cmp_to_key(sorCallback))
-        # BatchExecutAction
-        action = BatchAcceptTaskAction(tasks)
-        self.am.addAction(action)
-
-    def _setIncomingListeners(self):
-        self._clearIncomingListeners()
-        self.incomingListeners = []
-        for k in self.incomingStartDates:
-            tasks = self.incomingStartDates[k]
-            if len(tasks) > 0:
-                curStr = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                nextStr = curStr.split(" ")[0] + " " + k + ":00"
-                nt = time.mktime(time.strptime(nextStr, '%Y-%m-%d %H:%M:%S'))
-                dt = nt - time.time()
-                if dt > 0:
-                    timer = threading.Timer(1, self._timeCB, (tasks,k))
-                    timer.start()
-                    self.incomingListeners.append({'timer':timer,"key":k})
-
-    def _clearIncomingListeners(self):
-        for k,v in self.incomingListeners:
-            v['timer'].cancel()
-        self.incomingListeners = []
+    # def _clearIncomingListeners(self):
+    #     for k,v in self.incomingListeners:
+    #         v['timer'].cancel()
+    #     self.incomingListeners = []
 
     def run(self):
         while True:
