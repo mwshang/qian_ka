@@ -45,6 +45,8 @@ class TaskList(object):# 任务列表基类
         if self.session == None:
             self._initSession()
 
+        self.am.addGlobalAction(RefreshTaskList(self))
+
     def _initSession(self):
         self.session = requests.Session()
         self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
@@ -52,14 +54,20 @@ class TaskList(object):# 任务列表基类
     def tick(self,delta):
         self.am.tick(delta)
 
+    def hasRunningTask(self):
+        return self.runningTask != None
+
     def refresh(self):
+        logger.debug("start refresh task list ..........")
         self.session.cookies.load()
         response = self.session.get(self.task_list_url, headers=self.headers)
-        self._handleRefreshResponse(response)
+        res = self._handleRefreshResponse(response)
+        return res
 
     def _handleRefreshResponse(self,response):
         response = json.loads(response.content)
-        if self._responseIsSuccess(response):
+        oks = self._responseIsSuccess(response)
+        if oks[0]:
             # 标准任务
             stdTasks = self._getStdTasksByResponse(response)
             self._initStdTasks(stdTasks)
@@ -69,11 +77,11 @@ class TaskList(object):# 任务列表基类
             # 添加预告任务定时器
             self._setIncomingListeners()
         else:
-            logger.warning(f"_handleRefreshResponse refresh task error--->{self.task_list_url}")
-
+            logger.warning(f"_handleRefreshResponse refresh task error, error_code={oks[1]} {oks[2]}--->{self.task_list_url}")
+        return response
     def _responseIsSuccess(self,response):
         err_code = response.get("err_code")
-        return err_code == 0
+        return (err_code == 0,err_code,response.get("err_msg"))
 
     # 获取返回中的标准任务
     def _getStdTasksByResponse(self,response):
@@ -96,14 +104,17 @@ class TaskList(object):# 任务列表基类
         self._clearIncomingListeners()
 
     def _clearIncomingListeners(self):
-        for k,v in self.incomingListeners:
-            v['timer'].cancel()
+        for k in self.incomingListeners:
+            k['timer'].cancel()
+
         self.incomingListeners = []
 
     # 添加正在运行的任务
     def setRunningTask(self,task):
         raise Exception("setRunningTask unimplemention......")
 
+#####################################################
+# 钱咖任务列表
 class QianKaTaskList(TaskList):
     def __init__(self,task_list_url=None,accept_url=None,task_detail_url=None,cookie_path=None):
         self.headers = QIANKA_TASK_HEADERS
@@ -124,10 +135,10 @@ class QianKaTaskList(TaskList):
     # 添加正在运行的任务
     def setRunningTask(self, task):
         if task.isRunning():
-            pass
-            # self.am.clear()
-            # action = RunningTaskAction(self,task,QIANKA_SUBTASK_DETAIL.format(task.id))
-            # self.am.addAction(action)
+            self.runningTask = task
+            self.am.clear()
+            action = QianKaRunningTaskAction(self,task)
+            self.am.addAction(action)
         else:
             logger.warning(f"QianKaTaskList::setRunningTask task is not a running,id={task.id}")
 
@@ -150,6 +161,19 @@ class QianKaTaskList(TaskList):
 
             if runningTask:
                 self.setRunningTask(runningTask)
+            else:
+                arr = self.getQtyGT0Tasks()
+                if len(arr) > 0:
+                    action = QianKaBatchAcceptTaskAction(self,arr)
+                    self.am.addAction(action)
+
+    def getQtyGT0Tasks(self):#获取数量大于0的任务
+        rst = []
+        for task in self.stdTasks:
+            if task.qty > 0:
+                rst.append(task)
+
+        return rst
 
     # 初始化预告任务
     def _initIncomingTasks(self, tasks):
@@ -178,10 +202,8 @@ class QianKaTaskList(TaskList):
                 nt = time.mktime(time.strptime(nextStr, '%Y-%m-%d %H:%M:%S'))
                 dt = nt - time.time()
                 if dt > 0:
-                    # timer = threading.Timer(dt, self._timerCB, (tasks, k))
-                    # TODO
-                    logger.warning("TODO _setIncomingListeners---")
-                    timer = threading.Timer(1, self._timerCB, (tasks, k))
+                    timer = threading.Timer(dt, self._timerCB, (tasks, k))
+                    timer.setDaemon(True)
                     timer.start()
                     self.incomingListeners.append({'timer': timer, "key": k})
 
@@ -191,7 +213,6 @@ class QianKaTaskList(TaskList):
         tasks.sort(key=functools.cmp_to_key(self.sorCallback))
         action = QianKaBatchAcceptTaskAction(self,tasks)
         self.am.addAction(action)
-        # TODO
 
     # 当数据大于QTY_REWARD_THRESHOLD值时,按奖励倒序排列,否则按数量倒序排序
     def sorCallback(self,t1, t2):

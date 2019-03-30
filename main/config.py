@@ -6,8 +6,11 @@ RUN_DELTA = 1
 
 QTY_REWARD_THRESHOLD = 1200
 
-FPS = 5
+FPS = 12
 PER_FRAME_TIME = 1/FPS # 每一帧的时间
+
+REFRESH_TASKLIST_DELTA_MIN = 30 # 刷任务列表间隔时间最小值
+REFRESH_TASKLIST_DELTA_MAX = 180 # 刷任务列表间隔时间最大值
 
 #钱迦任务列表
 QIANKA_SUBTASK_LIST = "https://qianka.com/s4/lite.subtask.list"

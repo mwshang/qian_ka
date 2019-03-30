@@ -8,6 +8,8 @@ class ActionManager:
     def __init__(self):
         self.actions = []
         self.curAction = None
+        self.globalActions = []
+        self.globalActionsSize = 0
         self.id = "ActionManager_id" + str(time.time())
         self.lastTickTime = time.time()
 
@@ -19,6 +21,12 @@ class ActionManager:
 
     def addAction(self,action):
         self.actions.append(action)
+
+    def addGlobalAction(self,action):
+        self.globalActions.append(action)
+        self.globalActionsSize += 1
+
+        action.enter()
 
     def _delAction(self,action):
         action.exit()
@@ -40,7 +48,15 @@ class ActionManager:
             self.curAction.tick(delta)
             self.lastTickTime = time.time()
 
-            # logger.debug("end tick..........")
+        if self.globalActionsSize > 0:
+            for i in range(self.globalActionsSize-1,-1,-1):
+                action = self.globalActions[i]
+                if action.isFinished():
+                    action.exit()
+                    a = self.globalActions.pop(i)
+                    self.globalActionsSize -= 1
+                    continue
+                action.tick(delta)
 
     def clear(self):
         if self.curAction:

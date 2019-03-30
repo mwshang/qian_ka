@@ -2,6 +2,11 @@ from main.tasklist import *
 from main.config import PER_FRAME_TIME
 import time
 import json
+import wx
+
+
+app = wx.App(0)
+
 
 class Entry(object):
 
@@ -12,7 +17,7 @@ class Entry(object):
         # file = open('tasklist_data.json', 'r', encoding='utf-8')
         # datas = json.load(file)
         self.taskList = QianKaTaskList()
-        self.taskList.refresh()
+        # self.taskList.refresh()
         # self.taskList._handleRefreshResponse(datas)
 
     def run(self):

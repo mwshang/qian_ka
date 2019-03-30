@@ -34,6 +34,9 @@ class TaskVO():
     def updateStatus(self,v):
         self.status = v
 
+    def setRuningStatus(self):
+        self.status = 2
+
 class IncomingTaskVO(TaskVO):
     def __init__(self):
         super().__init__()
