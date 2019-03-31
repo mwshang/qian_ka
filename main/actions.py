@@ -105,12 +105,14 @@ class QianKaRunningTaskAction(RunningTaskAction):
 
 
 class BatchExecuteAction(Action):
-    def __init__(self,datas,batch=1,executCB=None):
+    def __init__(self,datas,batch=1,executCB=None,itemRetry=5):
         super().__init__()
         self.name = "BatchExecuteAction"
         self.datas = datas
         self.batch = batch
         self.executCB = executCB
+        self.itemRetry = itemRetry # 单个任务失败重试次数
+
         self.startIndex = 0
         self.size = 0
 
@@ -119,42 +121,46 @@ class BatchExecuteAction(Action):
         if self.datas == None or len(self.datas) == 0:
             self.setFinised(True)
             return
-        self.startIndex = 0
-        self.size = len(self.datas)
 
-    def _doTick(self,delta):
-        if self.startIndex >= self.size:
-            self.setFinised(True)
-            return
-        stIndex = self.startIndex
-        endIndex = min(stIndex + self.batch,self.size)
-        for k in range(stIndex,endIndex):
-            data = self.datas[k]
+        for data in self.datas:
             self._executeData(data)
-            if self.executCB != None:
-                self.executCB(data)
 
-        self.startIndex = endIndex + 1
+    def _isBreakFor(self):
+        return False
 
     def _executeData(self,data):
+        retry = self.itemRetry
+        while retry > 0:
+            if self._isBreakFor():
+                break
+            logger.debug(f"_executeData retry={retry} id={data.id} qty={data.qty}")
+            self._executeData_1(data)
+            delay = random.uniform(ACCEPT_TASK_MIN_DELAY,ACCEPT_TASK_MAX_DELAY)
+            time.sleep(delay)
+            retry -= 1
+
+    def _executeData_1(self, data):
         pass
 
 class QianKaBatchAcceptTaskAction(BatchExecuteAction):
-    def __init__(self,taskList,datas,batch=1,threadBatch=1):
-        super().__init__(datas,batch)
+    def __init__(self,taskList,datas,batch=1,threadBatch=1,itemRetry=QIANKA_ACCEPT_RETRY_COUNT):
+        super().__init__(datas,batch,itemRetry=itemRetry)
         self.threadBatch = threadBatch
         self.taskList = taskList
         self.name = "QianKaBatchAcceptTaskAction"
         # 接受任务请求
         self.task_start = QIANKA_SUBTASK_START
 
-    def _executeData(self, task):
-        for i in range(1, self.threadBatch):
-            t = threading.Thread(target=self.acceptTask, args=(task,))
+    def _isBreakFor(self):
+        return self.taskList.hasRunningTask()
+
+    def _executeData_1(self, task):
+        for i in range(0, self.threadBatch):
+            t = threading.Thread(target=self._acceptTask, args=(task,))
             t.setDaemon(True)
             t.start()
 
-    def acceptTask(self,task):
+    def _acceptTask(self,task):
         logger.debug(f"准备接受任务:id={task.id} qty={task.qty}")
         taskId = task.id
         url = self.task_start.format(taskId)
@@ -170,11 +176,13 @@ class QianKaBatchAcceptTaskAction(BatchExecuteAction):
                 task.updateStatus(2)
                 self.taskList.setRunningTask(task)
                 logger.debug(f"成功接受任务:id={task.id} qty={task.qty}")
+            elif type == 3:#被封号了
+                logger.debug(f"恭喜你中奖被封号了!!!!!!!!")
             else:
-                logger.debug(f"acceptTask:unhandled type={type}")
-            # logger.debug("acceptTask:success to get a task!")
+                logger.debug(f"_acceptTask:unhandled type={type}")
+            # logger.debug("_acceptTask:success to get a task!")
         else:
-            logger.debug("acceptTask:get a task failed!err_code=" + err_code)
+            logger.debug("_acceptTask:get a task failed!err_code=" + err_code)
 
 class CountAction(Action):
     def __init__(self,count,executeCB=None,args=None):

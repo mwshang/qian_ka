@@ -1,5 +1,5 @@
 from main.tasklist import *
-from main.config import PER_FRAME_TIME
+from main.config import *
 import time
 import json
 import wx
@@ -16,7 +16,7 @@ class Entry(object):
     def _initQianKa(self):
         # file = open('tasklist_data.json', 'r', encoding='utf-8')
         # datas = json.load(file)
-        self.taskList = QianKaTaskList()
+        self.taskList = QianKaTaskList(cookie_path=f"cookies/{TRYPLAY}_{ACCOUNT}.txt")
         # self.taskList.refresh()
         # self.taskList._handleRefreshResponse(datas)
 
