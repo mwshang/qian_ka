@@ -17,6 +17,7 @@ class TaskVO():
         self.appstore_cost = 0 # //应用需要下载的价格
         self.title = None # "百***"
         self.status_for_order = 1 #当status=2(正在进行的任务)时,这里为1,当status=1时,这儿显示的是2
+        self.end_at = 0
 
         self.tags = None
 
@@ -60,3 +61,35 @@ class IncomingTaskVO(TaskVO):
 
     def getStartDateKey(self):
         return self._sdKey
+
+
+class Mapzqq_TaskVO(TaskVO):
+    def __init__(self):
+        super().__init__()
+        self.user_id = 0 # customer_id
+        self._isRunningTask = False
+
+    def fill(self,task):
+
+        self.id = task.get("id")
+        self.qty = task.get("total")
+        self.reward = task.get("singleMoney")
+        self.title = task.get("name")
+        self.end_at = task.get("end_at") # 2019-03-31 21:21:01 这儿格式还需要统一一下
+
+        self.user_id = task.get("user_id")
+        self.useTotal = task.get("useTotal")
+        self.keyword = task.get("keyword")
+        self.logo = task.get("logo")
+        self.effectDesc = task.get("effectDesc") #"iPad专属
+
+    def fillRuningTask(self,task):
+        self.id = task.get("task_id")
+        self.user_id = task.get("customer_id")
+        self.keyword = task.get("keyword")
+        self.logo = task.get("logo")
+        self.effectDesc = task.get("effectDesc")  # "iPad专属
+        self._isRunningTask = True
+
+    def isRunning(self):
+        return self._isRunningTask

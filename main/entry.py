@@ -1,24 +1,25 @@
-from main.tasklist import *
-from main.config import *
+from main.common.config import *
 import time
-import json
 import wx
+from multiprocessing import Process
+from main.mapzqq.config import Tryplay_MapzqqCfg
+from main.qianka.config import Tryplay_QianKaCfg
+
+
+from main.utils.utils import createInstanceByAbsClass
 
 
 app = wx.App(0)
 
 
 class Entry(object):
+    def __init__(self,cfg):
+        self.cfg = cfg
+        self._initPlatforms()
 
-    def __init__(self):
-        self._initQianKa()
 
-    def _initQianKa(self):
-        # file = open('tasklist_data.json', 'r', encoding='utf-8')
-        # datas = json.load(file)
-        self.taskList = QianKaTaskList(cookie_path=f"cookies/{TRYPLAY}_{ACCOUNT}.txt")
-        # self.taskList.refresh()
-        # self.taskList._handleRefreshResponse(datas)
+    def _initPlatforms(self):
+        self.taskList = createInstanceByAbsClass(self.cfg.get("TaskList"), self.cfg)
 
     def run(self):
         lt = time.time()
@@ -28,6 +29,21 @@ class Entry(object):
             time.sleep(PER_FRAME_TIME)
 
 
-if __name__ == '__main__':
-    entry = Entry()
+def createEntry(data):
+    entry = Entry(data)
     entry.run()
+
+if __name__ == '__main__':
+    datas = [
+        {"platform": Tryplay_MapzqqCfg, "account": "13439424765"},
+        {"platform": Tryplay_QianKaCfg, "account": "13439424765"}
+    ]
+
+    for v in datas:
+        Cfg = v.get("platform")
+        cfg = Cfg(v.get("account"))
+        process = Process(target=createEntry,args=(cfg,))
+        process.start()
+
+    # 这儿不能去掉,否则进程会结束掉
+    time.sleep(99999)

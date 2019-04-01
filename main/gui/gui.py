@@ -1,8 +1,7 @@
 import wx
 import time
-import threading
 from wx.grid import GridTableBase
-from main.config import COLUMN_NAMES
+from main.common.config import COLUMN_NAMES
 
 try:
     from main.entry import app
