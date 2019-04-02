@@ -4,7 +4,7 @@ import threading
 
 from main.common.tasklist import TaskList
 from main.common.vo import TaskVO,IncomingTaskVO
-from main.qianka.actions import QianKaBatchAcceptTaskAction,QianKaRunningTaskAction
+from main.qianka.actions import QianKaBatchAcceptTaskAction
 
 
 # 钱咖任务列表

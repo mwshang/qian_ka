@@ -1,6 +1,7 @@
 import time
 import functools
 import threading
+import math
 
 from main.common.tasklist import TaskList
 from main.common.vo import TaskVO,IncomingTaskVO,Mapzqq_TaskVO
@@ -24,7 +25,7 @@ class MapzqqTaskList(TaskList):
 
     # 获取返回中的预告任务
     def _getIncomingTasksByResponse(self, response):
-        return []
+        return response.get("data").get("willTasks")
 
     def _initStdTasks(self,tasks,response):
         if tasks != None:
@@ -34,6 +35,10 @@ class MapzqqTaskList(TaskList):
             runningTask = None  # 正在进行的任务
 
             for task in tasks:
+                # if task.get("type_id") == 3:# 已经下载过了
+                #     continue
+                if task.get("effectDesc") == "iPad专属":
+                    continue
                 vo = Mapzqq_TaskVO()
                 vo.fill(task)
                 if vo.isRunning():
@@ -68,12 +73,16 @@ class MapzqqTaskList(TaskList):
 
     # 初始化预告任务
     def _initIncomingTasks(self, tasks):
-        if tasks:
+        if tasks != None:
             self.incomingStartDates = {}
             self.incomingTasks = []
             for task in tasks:
                 vo = IncomingTaskVO()
-                vo.fill(task)
+                vo.fill({
+                    'qty':task.get('leftTotal'),
+                    'reward':task.get("singleMoney"),
+                    'start_date':task.get("start_at")
+                })
                 self.incomingTasks.append(vo)
                 sdKey = vo.getStartDateKey()
                 if self.incomingStartDates.get(sdKey) == None:
@@ -89,9 +98,14 @@ class MapzqqTaskList(TaskList):
             tasks = self.incomingStartDates[k]
             if len(tasks) > 0:
                 curStr = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                nextStr = curStr.split(" ")[0] + " " + k + ":00"
+                nextStr = curStr.split(" ")[0] + " " + k
+
+                tmpArr = k.split(":")
+                if len(tmpArr) < 3:
+                    nextStr += ":00"
+
                 nt = time.mktime(time.strptime(nextStr, '%Y-%m-%d %H:%M:%S'))
-                dt = nt - time.time()
+                dt = math.ceil(nt - time.time())
                 if dt > 0:
                     timer = threading.Timer(dt, self._timerCB, (tasks, k))
                     timer.setDaemon(True)
@@ -100,9 +114,11 @@ class MapzqqTaskList(TaskList):
 
     def _timerCB(self,tasks,key):
         # 到达指定时间后,请求指定的任务
-        tasks.sort(key=functools.cmp_to_key(self.sorCallback))
-        action = self.cfg.createAcceptTaskAction(self, tasks)
-        self.am.addAction(action)
+        # tasks.sort(key=functools.cmp_to_key(self.sorCallback))
+        # action = self.cfg.createAcceptTaskAction(self, tasks)
+        # self.am.addAction(action)
+        # 由于鼠宝没有任务ID,所以只能重新刷新任务列表实现接任务
+        self.resetRefresh()
 
     # 当数据大于QTY_REWARD_THRESHOLD值时,按奖励倒序排列,否则按数量倒序排序
     def sorCallback(self,t1, t2):

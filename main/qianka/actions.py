@@ -4,7 +4,7 @@ import threading
 import json
 import time
 from main.common.actions import BatchExecuteAction,RunningTaskAction
-from main.gui.gui import RuningTaskWindow
+
 
 
 logging.basicConfig(level = logging.DEBUG,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -27,7 +27,7 @@ class QianKaBatchAcceptTaskAction(BatchExecuteAction):
             return self._acceptTask(task)
 
     def _acceptTask(self,task):
-        logger.debug(f"准备接受任务:id={task.id} qty={task.qty}")
+        logger.debug(f"准备接受任务:id={task.id} qty={task.qty} name={task.title}")
         taskId = task.id
         response = self.taskList.acceptTask(taskId)
         response = json.loads(response.content)
@@ -54,34 +54,3 @@ class QianKaBatchAcceptTaskAction(BatchExecuteAction):
         return False
 
 
-class QianKaRunningTaskAction(RunningTaskAction):
-    def __init__(self,taskList,task):
-        super().__init__(taskList,task)
-        self.nowTime = time.time()
-        self.expire_at = 0
-
-        self.flag = False
-
-    def _handleResponse(self, response):
-        if response.get("err_code") == 0:
-
-            self.nowTime = time.time()
-            # payload = response.get("payload")
-            # self.expire_at = payload.get("expire_at")
-            self.expire_at = response.get("expire_at")
-            self.flag = True
-
-            if self.expire_at > 0:
-                timer = threading.Timer(0.1, self._timerCB, (self.expire_at, response))
-                timer.setDaemon(True)
-                timer.start()
-
-    def _showRunningTaskWindow(self,expire_at,response):
-        RuningTaskWindow.create(expire_at, self).openView()
-
-    def _doTick(self,delta):
-        if self.flag:
-            dt = self.expire_at - self.nowTime
-            if dt <= 0:
-                self.setFinised(True)
-            logger.debug(f"QianKaRunningTaskAction::tick running task id={self.task.id}, dt={dt}")

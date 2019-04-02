@@ -4,6 +4,8 @@ import time
 import json
 import random
 from main.gui.gui import RuningTaskWindow
+from main.utils.utils import fmtTime
+from main.common.config import PRINT_DELTA
 
 logging.basicConfig(level = logging.DEBUG,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -34,9 +36,11 @@ class Action(object):
     def setFinised(self,v):
         self._isFinished = v
 
+# 全局Action,刷新任务列表
 class RefreshTaskList(Action):
     def __init__(self,taskList):
         super().__init__()
+        self.name = 'RefreshTaskList'
         self.taskList = taskList
 
         self.lastTime = 0
@@ -44,7 +48,12 @@ class RefreshTaskList(Action):
         self.refresh_tasklist_delta_max = self.taskList.getCfgValue("refresh_tasklist_delta_max") 
         self.deltaTime = self.refresh_tasklist_delta_min
 
+        self.tmpCnt = 0
+
     def enter(self):
+        self.lastTime = 0
+
+    def reset(self):
         self.lastTime = 0
 
     def _doTick(self,delta):
@@ -54,6 +63,10 @@ class RefreshTaskList(Action):
                 self.taskList.refresh()
                 self.lastTime = time.time()
                 self.deltaTime = int(random.uniform(self.refresh_tasklist_delta_min,self.refresh_tasklist_delta_max))
+            else:
+                self.tmpCnt += 1
+                if self.tmpCnt % PRINT_DELTA == 0:
+                    logger.debug(f"{fmtTime(self.deltaTime - int(t))} 开始刷新任务列表")
 
 class RunningTaskAction(Action):
     def __init__(self,taskList,task):
@@ -73,19 +86,29 @@ class RunningTaskAction(Action):
         if response.get("err_code") == 0:
 
             self.nowTime = time.time()
-            # payload = response.get("payload")
-            # self.expire_at = payload.get("expire_at")
             self.expire_at = response.get("expire_at")
             self.flag = True
 
             if self.expire_at > 0:
+                self.task.setRuningStatus()
                 # timer = threading.Timer(0.1, self._showRunningTaskWindow, (self.expire_at, response))
                 # timer.setDaemon(True)
                 # timer.start()
-                RuningTaskWindow.create(self.expire_at, self).openView()
+                self._showRunningTaskWindow(self.expire_at, response)
 
     def _showRunningTaskWindow(self,expire_at,response):
-        RuningTaskWindow.create(expire_at, self).openView()
+        param = {
+            'setFinishedCB':self.setFinishedCB,
+            'expire_at':expire_at,
+            'name':response.get("name"),
+            'response':response,
+            "taskList":self.taskList
+        }
+        RuningTaskWindow.create(param).openView()
+
+    def setFinishedCB(self):
+        self.setFinised(True)
+        self.taskList.resetRefresh()
 
     def _doTick(self,delta):
         if self.flag:
@@ -96,7 +119,7 @@ class RunningTaskAction(Action):
 
     def setFinised(self,v):
         super().setFinised(v)
-        self.task.setRuningStatus()
+        # self.task.setRuningStatus()
 
 
 
@@ -114,6 +137,7 @@ class BatchExecuteAction(Action):
 
         self.startIndex = 0
         self.size = 0
+        self._dicFilter = dict({}) # {taskId:data,}如果存在该变量中,就不会进行接受任务
 
     def enter(self):
         super().enter()
@@ -123,6 +147,13 @@ class BatchExecuteAction(Action):
 
         for data in self.datas:
             self._executeData(data)
+            # if self._filterExecute(data) == False:
+            #     self._executeData(data)
+
+    def _filterExecute(self,data):
+        if self._dicFilter.get(str(data.id)) != None:
+            return True
+        return False
 
 
     def _isBreakFor(self):

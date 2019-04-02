@@ -4,6 +4,7 @@ import wx
 from multiprocessing import Process
 from main.mapzqq.config import Tryplay_MapzqqCfg
 from main.qianka.config import Tryplay_QianKaCfg
+from main.gui.tasklistui import TileListView
 
 
 from main.utils.utils import createInstanceByAbsClass
@@ -20,6 +21,9 @@ class Entry(object):
 
     def _initPlatforms(self):
         self.taskList = createInstanceByAbsClass(self.cfg.get("TaskList"), self.cfg)
+        # self.taskListView = TileListView()
+        # self.taskListView.Show()
+
 
     def run(self):
         lt = time.time()
@@ -29,21 +33,32 @@ class Entry(object):
             time.sleep(PER_FRAME_TIME)
 
 
-def createEntry(data):
-    entry = Entry(data)
+def createEntry(cfg):
+    entry = Entry(cfg)
     entry.run()
 
-if __name__ == '__main__':
+def startRun():
     datas = [
         {"platform": Tryplay_MapzqqCfg, "account": "13439424765"},
-        {"platform": Tryplay_QianKaCfg, "account": "13439424765"}
+        # {"platform": Tryplay_QianKaCfg, "account": "13439424765"}
     ]
 
     for v in datas:
         Cfg = v.get("platform")
         cfg = Cfg(v.get("account"))
-        process = Process(target=createEntry,args=(cfg,))
+        process = Process(target=createEntry, args=(cfg,))
         process.start()
 
+if __name__ == '__main__':
+
+    if False:
+        startRun()
+    else:
+        createEntry(Tryplay_MapzqqCfg("13439424765"))
+        # createEntry(Tryplay_QianKaCfg("13439424765"))
+
     # 这儿不能去掉,否则进程会结束掉
+    #
+    app.MainLoop()
+    print("哎呀哎呀.............MainLoop")
     time.sleep(99999)

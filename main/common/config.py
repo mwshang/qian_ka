@@ -9,6 +9,7 @@ QTY_REWARD_THRESHOLD = 1200
 
 FPS = 12
 PER_FRAME_TIME = 1/FPS # 每一帧的时间
+PRINT_DELTA = FPS * 5
 
 
 COLUMN_NAMES = ["id", "数量", "奖励", "描述"]

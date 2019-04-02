@@ -3,7 +3,6 @@ import threading
 import json
 import time
 from main.common.actions import BatchExecuteAction,RunningTaskAction
-from main.gui.gui import RuningTaskWindow
 
 logging.basicConfig(level = logging.DEBUG,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -27,23 +26,32 @@ class MapzqqBatchAcceptTaskAction(BatchExecuteAction):
             return self._acceptTask(task)
 
     def _acceptTask(self,task):
-        logger.debug(f"准备接受任务:id={task.id} qty={task.qty}")
+        logger.debug(f"准备接受任务:id={task.id} qty={task.qty} name={task.title}")
         taskId = task.id
         response = self.taskList.acceptTask(taskId)
-        response = json.loads(response.content)
-        err_code = response.get("status")
-        rst = False
-        if err_code == 1:
-            payload = response.get("payload")
-            type = response.get("status")
-            if type == 1:  # 成功接受任务
-                task.updateStatus(2)
-                self.taskList.setRunningTask(task)
-                logger.debug(f"成功接受任务:id={task.id} qty={task.qty}")
-                rst = True
+        rst     = False
+        if response.status_code == 200:
+            response = json.loads(response.content)
+            err_code = response.get("status")
+
+            if err_code == 1:
+                payload = response.get("payload")
+                type = response.get("status")
+                if type == 1:  # 成功接受任务
+                    task.updateStatus(2)
+                    self.taskList.setRunningTask(task)
+                    logger.debug(f"成功接受任务:id={task.id} qty={task.qty}")
+                    rst = True
+                else:
+                    logger.debug(f"_acceptTask:unhandled type={type}")
+                # logger.debug("_acceptTask:success to get a task!")
+            elif err_code == 2:#次任务非首次
+                # rst = True
+                # task.updateStatus(2)
+                # self.taskList.setRunningTask(task)
+                self._dicFilter[task.id] = task
+                logger.debug(f"mapzqq\\actions::_acceptTask errmsg={response.get('msg')}")
+                pass
             else:
-                logger.debug(f"_acceptTask:unhandled type={type}")
-            # logger.debug("_acceptTask:success to get a task!")
-        else:
-            logger.debug(f"_acceptTask:get a task failed!err_code={err_code} msg={response.get('msg')}")
-        return rst
+                logger.debug(f"_acceptTask:get a task failed!err_code={err_code} msg={response.get('msg')}")
+            return rst

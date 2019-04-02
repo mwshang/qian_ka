@@ -14,3 +14,14 @@ def createInstance(module_name, class_name, *args, **kwargs):
     class_meta = getattr(module_meta, class_name)
     obj = class_meta(*args, **kwargs)
     return obj
+
+def fmtTime(sec):
+    h = int(sec/3600)
+    if h > 0:
+        sec = max(0,sec-3600)
+    m = int(sec/60)
+    s = max(0,(sec%60) if m >0 else sec)
+    if h > 0:
+        return f"{h}小时{m}分{s}秒"
+    else:
+        return f"{m}分{s}秒"

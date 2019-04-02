@@ -91,5 +91,10 @@ class Mapzqq_TaskVO(TaskVO):
         self.effectDesc = task.get("effectDesc")  # "iPad专属
         self._isRunningTask = True
 
+    def updateStatus(self,v):
+        super().updateStatus(v)
+        if v == 2 :
+            self._isRunningTask = True
+
     def isRunning(self):
         return self._isRunningTask

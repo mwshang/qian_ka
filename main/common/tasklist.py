@@ -5,7 +5,7 @@ import functools
 
 from main.common.actionmanager import ActionManager
 from main.common.vo import *
-from main.common.actions import *
+from main.common.actions import RunningTaskAction,RefreshTaskList
 from main.common.config import *
 
 logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -27,7 +27,7 @@ class TaskList(object):# 任务列表基类
         self.session = None
 
         # 正在进行的任务
-        self.runningTask = None
+        # self.runningTask = None
         # 标准任务
         self.stdTasks = []
         # 预告任务
@@ -44,18 +44,18 @@ class TaskList(object):# 任务列表基类
 
         self.am.addGlobalAction(RefreshTaskList(self))
 
+
+        # param = {
+        #     'setFinishedCB': None,
+        #     'expire_at': time.time()+200,
+        #     "taskList": self
+        # }
+        # RuningTaskWindow.create(param).openView()
+        # time.sleep(99999)
+
     def _initSession(self):
         self.session = requests.Session()
         self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
-
-    def setRunningTask(self, task):
-        if task.isRunning():
-            self.runningTask = task
-            self.am.clear()
-            action = RunningTaskAction(self, task)
-            self.am.addAction(action)
-        else:
-            logger.warning(f"TaskList::setRunningTask task is not a running,id={task.id}")
 
     def tick(self,delta):
         self.am.tick(delta)
@@ -63,14 +63,29 @@ class TaskList(object):# 任务列表基类
     def getCfgValue(self,prop):
         return self.cfg.get(prop)
 
-    def hasRunningTask(self):
-        return self.runningTask != None
-
     def refreshTaskList(self):
         return self.cfg.refreshTaskList(self.session)
 
     def acceptTask(self,taskId):
         return self.cfg.acceptTask(self.session,taskId)
+
+    def hasRunningTask(self):
+        action =  self.am.findActionByClass(RunningTaskAction)
+        if action and not action.isFinished():
+            return True
+        return False
+
+    def setRunningTask(self, task):
+        if task == None:
+            # self.runningTask = task
+            pass
+        elif task.isRunning():
+            # self.runningTask = task
+            self.am.clear()
+            action = RunningTaskAction(self, task)
+            self.am.addAction(action)
+        else:
+            logger.warning(f"TaskList::setRunningTask task is not a running,id={task.id}")
 
     def getRunningTaskInfo(self,taskId):
         return self.cfg.getRunningTaskInfo(self.session,taskId)
@@ -81,6 +96,11 @@ class TaskList(object):# 任务列表基类
         response = self.refreshTaskList()
         res = self._handleRefreshResponse(response)
         return res
+
+    def resetRefresh(self):
+        rtAction = self.am.findGlobalActionByName("RefreshTaskList")
+        if rtAction:
+            rtAction.reset()
 
     def _handleRefreshResponse(self,response):
         response = json.loads(response.content)

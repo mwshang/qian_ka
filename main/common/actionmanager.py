@@ -19,6 +19,25 @@ class ActionManager:
     def start(self):
         self.lastTickTime = time.time()
 
+    def findActionByClass(self,Class):
+        if self.curAction != None:
+            if isinstance(self.curAction,Class):
+                return self.curAction
+        for action in self.actions:
+            if isinstance(action,Class):
+                return action
+        for action in self.globalActions:
+            if isinstance(action,Class):
+                return action
+        return None
+
+    def findGlobalActionByName(self,name):
+        for action in self.globalActions:
+            if action.name == name:
+                return action
+
+        return None
+
     def addAction(self,action):
         self.actions.append(action)
 
@@ -26,7 +45,7 @@ class ActionManager:
         self.globalActions.append(action)
         self.globalActionsSize += 1
 
-        action.enter()
+        action.enter()    
 
     def _delAction(self,action):
         action.exit()
