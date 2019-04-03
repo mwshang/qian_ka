@@ -47,6 +47,45 @@ class UIBase(wx.Frame):
         except Exception as e:
             print('reloadCookie',e.args)
 
+
+class RefreshCookieUI(UIBase):
+
+    def __init__(self, parent):
+        super().__init__(parent=parent, title=u"重新加载Cookie", size=wx.Size(200, 100))
+
+        self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
+
+        bSizer19 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.m_button14 = wx.Button(self, wx.ID_ANY, u"Load Cookie", wx.DefaultPosition, wx.Size(100, 40), 0)
+        bSizer19.Add(self.m_button14, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 5)
+
+        self.SetSizer(bSizer19)
+        self.Layout()
+
+        self.Centre(wx.BOTH)
+
+        # Connect Events
+        self.m_button14.Bind(wx.EVT_BUTTON, self.OnLoadCookie)
+
+    def __del__(self):
+        pass
+
+    # Virtual event handlers, overide them in your derived class
+    def OnLoadCookie(self, event):
+        event.Skip()
+
+class RefreshCookieView(RefreshCookieUI):
+
+    def __init__(self,session,title=None):
+        self.session = session
+        if title:
+            self.SetTitle(title)
+
+    def OnLoadCookie(self, event):
+        self.reloadCookie()
+
+
 class RunningTaskWindowUI(UIBase):
 
     def __init__(self, parent):

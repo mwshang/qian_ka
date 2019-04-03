@@ -60,7 +60,11 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         param = self.getParams()
         if taskId != None:
             param["taskId"] = taskId
-        return session.post(url, data=param, headers=self.headers)
+        try:
+            return session.post(url, data=param, headers=self.headers)
+        except:
+            pass
+
 
     def refreshTaskList(self,session):
         url = self.cfg.get("task_list_url")
