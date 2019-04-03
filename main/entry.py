@@ -4,7 +4,7 @@ import wx
 from multiprocessing import Process
 from main.mapzqq.config import Tryplay_MapzqqCfg
 from main.qianka.config import Tryplay_QianKaCfg
-from main.gui.tasklistui import TileListView
+from main.gui.tasklistui import TileListWindow
 
 
 from main.utils.utils import createInstanceByAbsClass
@@ -21,9 +21,8 @@ class Entry(object):
 
     def _initPlatforms(self):
         self.taskList = createInstanceByAbsClass(self.cfg.get("TaskList"), self.cfg)
-        # self.taskListView = TileListView()
+        # self.taskListView = TileListWindow(self.taskList)
         # self.taskListView.Show()
-
 
     def run(self):
         lt = time.time()
@@ -31,6 +30,7 @@ class Entry(object):
             self.taskList.tick(time.time() - lt)
             lt = time.time()
             time.sleep(PER_FRAME_TIME)
+        pass
 
 
 def createEntry(cfg):
@@ -57,8 +57,9 @@ if __name__ == '__main__':
         createEntry(Tryplay_MapzqqCfg("13439424765"))
         # createEntry(Tryplay_QianKaCfg("13439424765"))
 
-    # 这儿不能去掉,否则进程会结束掉
+
     #
-    app.MainLoop()
+    # app.MainLoop()
     print("哎呀哎呀.............MainLoop")
+    # 这儿不能去掉,否则进程会结束掉
     time.sleep(99999)

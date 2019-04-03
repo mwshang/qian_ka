@@ -45,14 +45,6 @@ class TaskList(object):# 任务列表基类
         self.am.addGlobalAction(RefreshTaskList(self))
 
 
-        # param = {
-        #     'setFinishedCB': None,
-        #     'expire_at': time.time()+200,
-        #     "taskList": self
-        # }
-        # RuningTaskWindow.create(param).openView()
-        # time.sleep(99999)
-
     def _initSession(self):
         self.session = requests.Session()
         self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)

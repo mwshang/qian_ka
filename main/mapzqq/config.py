@@ -21,8 +21,8 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 
     def _getCfg(self):
         cfg = {
-            "TaskList": "main.mapzqq.tasklist.MapzqqTaskList",
-            "AcceptTaskAction": "main.mapzqq.actions.MapzqqBatchAcceptTaskAction",
+            "TaskList": "main.mapzqq.tasklist.MapzqqTaskList",#任务列表
+            "AcceptTaskAction": "main.mapzqq.actions.MapzqqBatchAcceptTaskAction", #接受任务Action
             #刷新任务列表URL
 			"task_list_url":"http://www.mapzqq-com.com/data/index",
 			#接受任务URL

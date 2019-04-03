@@ -115,7 +115,7 @@ class RunningTaskAction(Action):
             dt = self.expire_at - self.nowTime
             if dt <= 0:
                 self.setFinised(True)
-            logger.debug(f"RunningTaskAction::tick running task id={self.task.id}, dt={dt}")
+            # logger.debug(f"RunningTaskAction::tick running task id={self.task.id}, dt={dt}")
 
     def setFinised(self,v):
         super().setFinised(v)

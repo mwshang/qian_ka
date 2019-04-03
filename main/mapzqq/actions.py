@@ -49,7 +49,7 @@ class MapzqqBatchAcceptTaskAction(BatchExecuteAction):
                 # rst = True
                 # task.updateStatus(2)
                 # self.taskList.setRunningTask(task)
-                self._dicFilter[task.id] = task
+                # self._dicFilter[task.id] = task
                 logger.debug(f"mapzqq\\actions::_acceptTask errmsg={response.get('msg')}")
                 pass
             else:

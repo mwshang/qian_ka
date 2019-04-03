@@ -1,5 +1,7 @@
 import wx
 from main.gui.gui import UIBase
+import time
+from main.common.config import PER_FRAME_TIME
 
 class TileListUI(UIBase):
 
@@ -88,6 +90,19 @@ class TileListUI(UIBase):
         event.Skip()
 
 
-class TileListView(TileListUI):
-    def __init__(self):
+class TileListWindow(TileListUI):
+    def __init__(self,taskList):
         super().__init__()
+
+        self.taskList = taskList
+
+        # 普通定时器，循环调用该函数Notify，会一直进行循环
+        self.timer = wx.PyTimer(self.onTick)  # 创建定时器
+        self.timer.Start(PER_FRAME_TIME * 1000)  # 设置间隔时间
+
+        self.lastTime = time.time()
+
+    def onTick(self):
+        delta = time.time() - self.lastTime
+        self.taskList.tick(delta)
+

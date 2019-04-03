@@ -40,6 +40,12 @@ class UIBase(wx.Frame):
         else:
             print("UIBase failed to setCookie,self.session = None!!!!")
 
+    def reloadCookie(self):
+        cookieJar = self.session.cookies
+        try:
+            cookieJar.load()
+        except Exception as e:
+            print('reloadCookie',e.args)
 
 class RunningTaskWindowUI(UIBase):
 
@@ -77,30 +83,9 @@ class RunningTaskWindowUI(UIBase):
         bSizer5.Add(bSizer6, 0, 0, 5)
 
         bSizer7 = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.m_stCookieKey = wx.StaticText(self, wx.ID_ANY, u"name:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_stCookieKey.Wrap(-1)
-        bSizer7.Add(self.m_stCookieKey, 0, wx.ALL, 5)
-
-        self.m_tcCookieKey = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(100, -1), 0)
-        bSizer7.Add(self.m_tcCookieKey, 0, wx.ALL, 5)
-
-        self.m_stCookieVal = wx.StaticText(self, wx.ID_ANY, u"Value:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_stCookieVal.Wrap(-1)
-        bSizer7.Add(self.m_stCookieVal, 0, wx.ALL, 5)
-
-        self.m_tcCookieVal = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(100, -1), 0)
-        bSizer7.Add(self.m_tcCookieVal, 0, wx.ALL, 5)
-
-        self.m_stCookieDM = wx.StaticText(self, wx.ID_ANY, u"domain:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_stCookieDM.Wrap(-1)
-        bSizer7.Add(self.m_stCookieDM, 0, wx.ALL, 5)
-
-        self.m_tcCookieDM = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size(100, -1), 0)
-        bSizer7.Add(self.m_tcCookieDM, 0, wx.ALL, 5)
-
-        self.m_btnSetCookie = wx.Button(self, wx.ID_ANY, u"设置cookie", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer7.Add(self.m_btnSetCookie, 0, wx.ALL, 5)
+		
+        self.m_btnSetCookie = wx.Button( self, wx.ID_ANY, u"Load Cookie", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer7.Add( self.m_btnSetCookie, 0, wx.ALL, 5 )
 
         bSizer5.Add(bSizer7, 1, wx.EXPAND, 5)
 
@@ -110,22 +95,25 @@ class RunningTaskWindowUI(UIBase):
         self.Centre(wx.BOTH)
 
         # Connect Events
-        self.m_btnTaskFinished.Bind(wx.EVT_LEFT_UP, self.OnTaskFinished)
-        self.m_btnGetReward.Bind(wx.EVT_LEFT_UP, self.OnGetReward)
-        self.m_btnSetCookie.Bind(wx.EVT_LEFT_UP, self.OnSetCookie)
+        self.m_btnTaskFinished.Bind( wx.EVT_LEFT_UP, self.OnTaskFinished )
+        self.m_btnGetReward.Bind( wx.EVT_LEFT_UP, self.OnGetReward )
+        self.m_btnSetCookie.Bind( wx.EVT_BUTTON, self.OnLoadCookie )
 
     def __del__(self):
         pass
 
     # Virtual event handlers, overide them in your derived class
     def OnTaskFinished(self, event):
-        event.Skip()
+        if event:
+            event.Skip()
 
     def OnGetReward(self, event):
-        event.Skip()
+        if event:
+            event.Skip()
 
-    def OnSetCookie(self, event):
-        event.Skip()
+    def OnLoadCookie( self, event ):
+        if event:
+            event.Skip()
 class RuningTaskWindow(RunningTaskWindowUI):
 
     '''
@@ -139,7 +127,7 @@ class RuningTaskWindow(RunningTaskWindowUI):
     def __init__(self,param):
         super().__init__( None)
         self.param = param
-        # 过期时间
+        # 过期时间x`
         self.expire_at = self.param.get("expire_at")
         self.setFinishedCB = self.param.get("setFinishedCB")
         self.taskList = self.param.get("taskList")
@@ -175,19 +163,18 @@ class RuningTaskWindow(RunningTaskWindowUI):
 
     def OnTaskFinished(self, event):
         super().OnTaskFinished(event)
-        self.Close(True)
+        # 这儿Close会把整个App给停止掉,还未找原因
+        # self.Close(True)
+        self.Hide()
+
         if self.setFinishedCB != None:
             self.setFinishedCB()
 
-    def OnSetCookie(self,event):
-        super().OnSetCookie(event)
-        name = self.m_tcCookieKey.GetValue()
-        value = self.m_tcCookieVal.GetValue()
-        domain = self.m_tcCookieDM.GetValue()
-        path = '/'
 
-        self.saveCookie(name,value,domain,path)
-
+    def OnLoadCookie( self, event ):
+        super().OnLoadCookie(event)
+        self.reloadCookie()
+        print("reloadCookie finished!!!!")
 
     def onDestroyWindow(self, event=None):
         pass
