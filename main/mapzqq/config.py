@@ -3,6 +3,7 @@ from main.common.config import TryplayCfg
 from pickle import dumps,loads
 import json
 import math
+from main.common.vo import ResponseData
 
 #鼠宝
 class Tryplay_MapzqqCfg(TryplayCfg):
@@ -61,9 +62,10 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         if taskId != None:
             param["taskId"] = taskId
         try:
+            # raise Exception("dd")
             return session.post(url, data=param, headers=self.headers)
         except:
-            pass
+            return ResponseData().fill(status_code=500)
 
 
     def refreshTaskList(self,session):
@@ -96,11 +98,10 @@ class Tryplay_MapzqqCfg(TryplayCfg):
                     expire_at = math.ceil(time.time()+data.get("rest"))
                     name = task.get("name")
 
-        return {
-            'expire_at': expire_at,
-            'response': response,
-            'task':task,
-            'taskId': taskId,
-            'name':name,
-            'err_code':0 if err_code == 1 else err_code
-        }
+
+
+        code = 0 if err_code == 1 else err_code
+        rst = RunningTaskData().fill(expire_at=expire_at,response=response,task=task,taskId=taskId,name=name,err_code=code)
+
+
+        return rst

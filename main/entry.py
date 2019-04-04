@@ -1,10 +1,12 @@
 from main.common.config import *
 import time
 import wx
+import threading
 from multiprocessing import Process
 from main.mapzqq.config import Tryplay_MapzqqCfg
 from main.qianka.config import Tryplay_QianKaCfg
 from main.gui.tasklistui import TileListWindow
+
 
 
 from main.utils.utils import createInstanceByAbsClass
@@ -21,15 +23,23 @@ class Entry(object):
 
     def _initPlatforms(self):
         self.taskList = createInstanceByAbsClass(self.cfg.get("TaskList"), self.cfg)
-        # self.taskListView = TileListWindow(self.taskList)
-        # self.taskListView.Show()
+        self.taskListView = TileListWindow(self.taskList)
+        self.taskListView.Show()
 
-    def run(self):
+        logic_thread = threading.Thread(target=self.taskListThread)
+        logic_thread.setDaemon(True)
+        logic_thread.start()
+
+
+    def taskListThread(self):
+        '''线程函数'''
         lt = time.time()
         while True:
             self.taskList.tick(time.time() - lt)
             lt = time.time()
             time.sleep(PER_FRAME_TIME)
+
+    def run(self):
         pass
 
 
@@ -59,7 +69,7 @@ if __name__ == '__main__':
 
 
     #
-    # app.MainLoop()
+    app.MainLoop()
     print("哎呀哎呀.............MainLoop")
     # 这儿不能去掉,否则进程会结束掉
-    time.sleep(99999)
+    # time.sleep(99999)

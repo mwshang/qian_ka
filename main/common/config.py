@@ -3,6 +3,7 @@ from pickle import dumps,loads
 import time
 from main.utils.utils import *
 import json
+from main.common.observer import Observer
 
 
 QTY_REWARD_THRESHOLD = 1200
@@ -14,6 +15,7 @@ PRINT_DELTA = FPS * 5
 
 COLUMN_NAMES = ["id", "数量", "奖励", "描述"]
 
+observer = Observer()
 
 class TryplayCfg():
     def __init__(self,account):
@@ -29,7 +31,11 @@ class TryplayCfg():
 
     def refreshTaskList(self,session):
         url = self.cfg.get("task_list_url")
-        return session.get(url,headers=self.headers)
+        try:
+            return session.get(url, headers=self.headers)
+        except:
+            return {'status_code':500}
+
 
     def acceptTask(self,session,taskId):
         raise Exception("acceptTask need impl by sub class.....")

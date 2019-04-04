@@ -7,6 +7,8 @@ from main.common.actionmanager import ActionManager
 from main.common.vo import *
 from main.common.actions import RunningTaskAction,RefreshTaskList
 from main.common.config import *
+from main.gui.gui import RefreshCookieView
+from main.common.constants import *
 
 logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -39,6 +41,8 @@ class TaskList(object):# 任务列表基类
         self.am = ActionManager()
         self.am.start()
 
+        self.owner = None
+
         if self.session == None:
             self._initSession()
 
@@ -48,6 +52,9 @@ class TaskList(object):# 任务列表基类
     def _initSession(self):
         self.session = requests.Session()
         self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
+
+    def setOwner(self,owner):
+        self.owner = owner
 
     def tick(self,delta):
         self.am.tick(delta)
@@ -72,10 +79,14 @@ class TaskList(object):# 任务列表基类
             # self.runningTask = task
             pass
         elif task.isRunning():
-            # self.runningTask = task
             self.am.clear()
-            action = RunningTaskAction(self, task)
-            self.am.addAction(action)
+            response = self.getRunningTaskInfo(task.id)
+            if response.error_code == 0:
+                response.task.setRuningStatus()
+                global observer
+                observer.send(MSG_ACCEPTED_ATASK,response)
+                    
+
         else:
             logger.warning(f"TaskList::setRunningTask task is not a running,id={task.id}")
 
@@ -86,8 +97,8 @@ class TaskList(object):# 任务列表基类
         logger.debug("start refresh task list ..........")
         self.session.cookies.load()
         response = self.refreshTaskList()
-        res = self._handleRefreshResponse(response)
-        return res
+        if response.status_code == 200:
+            self._handleRefreshResponse(response)
 
     def resetRefresh(self):
         rtAction = self.am.findGlobalActionByName("RefreshTaskList")
@@ -108,6 +119,12 @@ class TaskList(object):# 任务列表基类
             self._setIncomingListeners()
         else:
             logger.warning(f"_handleRefreshResponse refresh task error, error_code={oks[1]} {oks[2]}--->{self.task_list_url}")
+            # RefreshCookieView(self.session).Show()
+
+            observer.send(MSG_UPDATE_TILELIST_STATUS,{'msg':f'请求失败,请刷新Cookie!!!'})
+            #
+            # if hasattr(self.owner,'SetErrorStatusText'):
+            #     self.owner.SetErrorStatusText(f'请求失败,请刷新Cookie!!!')
         return response
     def _responseIsSuccess(self,response):
         err_code = response.get("err_code")

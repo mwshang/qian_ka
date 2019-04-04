@@ -5,7 +5,9 @@ import json
 import random
 from main.gui.gui import RuningTaskWindow
 from main.utils.utils import fmtTime
-from main.common.config import PRINT_DELTA
+from main.common.config import PRINT_DELTA,observer
+from main.common.vo import ResponseData,RunningTaskData
+from main.common.constants import *
 
 logging.basicConfig(level = logging.DEBUG,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -49,6 +51,7 @@ class RefreshTaskList(Action):
         self.deltaTime = self.refresh_tasklist_delta_min
 
         self.tmpCnt = 0
+        self.refreshInfo = ''
 
     def enter(self):
         self.lastTime = 0
@@ -60,13 +63,17 @@ class RefreshTaskList(Action):
         if not self.taskList.hasRunningTask():#如果当前没有运行的任务
             t = time.time() - self.lastTime
             if t >= self.deltaTime:
-                self.taskList.refresh()
                 self.lastTime = time.time()
-                self.deltaTime = int(random.uniform(self.refresh_tasklist_delta_min,self.refresh_tasklist_delta_max))
+                self.deltaTime = int(random.uniform(self.refresh_tasklist_delta_min, self.refresh_tasklist_delta_max))
+
+                self.taskList.refresh()
+
             else:
-                self.tmpCnt += 1
-                if self.tmpCnt % PRINT_DELTA == 0:
-                    logger.debug(f"{fmtTime(self.deltaTime - int(t))} 开始刷新任务列表")
+                self.refreshInfo = f"{fmtTime(self.deltaTime - int(t))}刷新任务"
+                # self.tmpCnt += 1
+                # if self.tmpCnt % PRINT_DELTA == 0:
+                #     self.refreshInfo = f"{fmtTime(self.deltaTime - int(t))} 开始刷新任务列表"
+                    # logger.debug(self.refreshInfo)
 
 class RunningTaskAction(Action):
     def __init__(self,taskList,task):
@@ -75,6 +82,11 @@ class RunningTaskAction(Action):
         self.task = task
         self.name = "RunningTaskAction"
 
+        global observer
+        observer.addObserver({'type':MSG_TASK_FINISHED,'callback':self.OnTaskFinished})
+
+    def OnTaskFinished(self):
+        self.setFinishedCB()
 
     def enter(self):
         logger.debug(f"RunningTaskAction::enter begin to get running task,id={self.task.id}")
@@ -83,10 +95,10 @@ class RunningTaskAction(Action):
 
 
     def _handleResponse(self, response):
-        if response.get("err_code") == 0:
+        if response.err_code == 0:
 
             self.nowTime = time.time()
-            self.expire_at = response.get("expire_at")
+            self.expire_at = response.expire_at
             self.flag = True
 
             if self.expire_at > 0:
@@ -97,14 +109,21 @@ class RunningTaskAction(Action):
                 self._showRunningTaskWindow(self.expire_at, response)
 
     def _showRunningTaskWindow(self,expire_at,response):
-        param = {
-            'setFinishedCB':self.setFinishedCB,
-            'expire_at':expire_at,
-            'name':response.get("name"),
-            'response':response,
-            "taskList":self.taskList
-        }
-        RuningTaskWindow.create(param).openView()
+        # param = {
+        #     'setFinishedCB':self.setFinishedCB,
+        #     'expire_at':expire_at,
+        #     'name':response.get("name"),
+        #     'response':response,
+        #     "taskList":self.taskList
+        # }
+        data = RunningTaskData().fill(
+            expire_at = expire_at,
+            response = response,
+            name=response.get("name"),
+        )
+        # RuningTaskWindow.create(param).openView()
+        global observer
+        observer.send(MSG_ACCEPTED_ATASK,data)
 
     def setFinishedCB(self):
         self.setFinised(True)
@@ -120,6 +139,8 @@ class RunningTaskAction(Action):
     def setFinised(self,v):
         super().setFinised(v)
         # self.task.setRuningStatus()
+        global observer
+        observer.removeObserver({'type': MSG_TASK_FINISHED, 'callback': self.OnTaskFinished})
 
 
 

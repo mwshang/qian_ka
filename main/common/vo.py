@@ -98,3 +98,32 @@ class Mapzqq_TaskVO(TaskVO):
 
     def isRunning(self):
         return self._isRunningTask
+
+
+class ResponseData():
+    def __init__(self):
+        self.expire_at = 0
+        self.err_code = 0 # 0表示成功
+        self.response = None
+        self.status_code = 0 # 200返回成功
+
+    def fill(self,status_code=200,err_code=0,expire_at=0,response=None):
+        self.status_code = status_code
+        self.err_code = err_code
+        self.expire_at = expire_at
+        self.response = response
+        return self
+
+class RunningTaskData(ResponseData):
+    def __init__(self):
+        super().__init__()
+        self.task = None
+        self.taskId = 0
+        self.name = ''
+
+    def fill(self, status_code=200, err_code=0, expire_at=0, response=None,name='',task=None,taskId=0):
+        super().fill(status_code,err_code,expire_at,response)
+        self.task = task
+        self.taskId = taskId
+        self.name = name
+        return self

@@ -1,60 +1,65 @@
-import time
+#!/usr/bin/env python
+
+# coding=utf-8
+
 import wx
+
+
+class MyTestEvent(wx.PyCommandEvent):  # 1 定义事件
+
+    def __init__(self, evtType, id):
+        wx.PyCommandEvent.__init__(self, evtType, id)
+
+        self.eventArgs = ""
+
+    def GetEventArgs(self):
+        return self.eventArgs
+
+    def SetEventArgs(self, args):
+        self.eventArgs = args
+
+
+myEVT_MY_TEST = wx.NewEventType()  # 2 创建一个事件类型
+
+EVT_MY_TEST = wx.PyEventBinder(myEVT_MY_TEST, 1)  # 3 创建一个绑定器对象
+
+
 class MyFrame(wx.Frame):
-    def __init__(self,parent=None):
-        super(MyFrame, self).__init__(parent, -1, "数表控件", size=(450, 250))
+    def __init__(self):
+        wx.Frame.__init__(self, None, -1, "My Frame", size=(300, 300), pos=(300, 300))
 
-        panel = wx.Panel(self,-1)
-        sb = self.CreateStatusBar(2)
-        sb.SetStatusWidths([100,220])
+        panel = wx.Panel(self, -1)
 
-        self.count = 0
-        #普通定时器，循环调用该函数Notify，会一直进行循环
-        self.timer = wx.PyTimer(self.Notify)    #创建定时器
-        self.timer.Start(1000)  #设置间隔时间
+        self.button1 = wx.Button(panel, id=-1, pos=(40, 40), label="button1")
 
-        self.inputText = wx.TextCtrl(panel,-1,"",pos = (10,10),size=(50,-1))
-        self.inputText2 = wx.TextCtrl(panel,-1,"",pos = (10,10),size=(50,-1))
-        btn = wx.Button(panel,-1,"带参数的定时器")
-        btn2 = wx.Button(panel,-1,"停止")
+        self.Bind(wx.EVT_BUTTON, self.OnButton1Click, self.button1)
 
-        #在绑定的函数中去调用定时器进行开启和关闭
-        self.Bind(wx.EVT_BUTTON,self.OnStart,btn)
-        self.Bind(wx.EVT_BUTTON,self.OnStop,btn2)
+        self.Bind(EVT_MY_TEST, self.OnHandle)  # 4绑定事件处理函数
 
-        sizer = wx.FlexGridSizer(cols=4, vgap=10, hgap=10)
-        sizer.Add(self.inputText)
-        sizer.Add(self.inputText2)
-        sizer.Add(btn)
-        sizer.Add(btn2)
-        panel.SetSizer(sizer)
-        panel.Fit()
+    def OnButton1Click(self, event):
+        self.OnDoTest()
 
-    def OnStart(self,event):
-        self.timer2 = wx.CallLater(1000,self.OnCallTimer,1,2,3) #带参数的定时器
+    def OnHandle(self, event):  # 8 事件处理函数
 
-    def OnStop(self,event):
-        self.timer2.Stop()      #停止定时器
-        self.inputText2.Value = str(self.timer2.GetResult())        #返回参数的计算结果在第二个输入框
+        dlg = wx.MessageDialog(self, event.GetEventArgs(), 'A Message Box', wx.OK | wx.ICON_INFORMATION)
 
-    def OnCallTimer(self,*args,**kwargs):
-        self.count = self.count + 1     #每次调用都会对该数加一（每秒加一）
-        self.inputText.Value = str(self.count)  #显示在第一个输入框
-        tup = args
-        total = 0
-        for x in tup:
-            total += x
-        self.timer2.Restart(1000,total,total+1,total+2) #重启定时器
-        return total
+        dlg.ShowModal()
 
-    def Notify(self):
-        t = time.localtime(time.time())
-        self.SetStatusText("定时器",0)
-        self.SetStatusText(time.strftime("%Y-%m-%d %H:%M:%S"),1)
+        dlg.Destroy()
 
-app = wx.App()
+    def OnDoTest(self):
+        evt = MyTestEvent(myEVT_MY_TEST, self.button1.GetId())  # 5 创建自定义事件对象
 
-frame = MyFrame()
-frame.Show()
+        evt.SetEventArgs("test event")  # 6添加数据到事件
 
-app.MainLoop()
+        self.GetEventHandler().ProcessEvent(evt)  # 7 处理事件
+
+
+if __name__ == '__main__':
+    app = wx.PySimpleApp()
+
+    frame = MyFrame()
+
+    frame.Show(True)
+
+    app.MainLoop()

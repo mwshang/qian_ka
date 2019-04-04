@@ -4,6 +4,7 @@ from wx.grid import GridTableBase
 from main.common.config import COLUMN_NAMES
 import http.cookiejar as cookielib
 from main.utils.utils import fmtTime
+from main.common.config import observer
 
 try:
     from main.entry import app
@@ -14,6 +15,48 @@ class UIBase(wx.Frame):
     def __init__(self,parent=None, id=wx.ID_ANY,title='',pos=wx.DefaultPosition, size=wx.Size(650, 450),style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL):
         super().__init__(parent,id=id,title=title,pos=pos,size=size,style=style)
 
+        self.observers = []
+
+    '''
+        添加观察者
+        @param {owner,callback=(data) ,
+                type="数据类型"
+                }
+    '''
+    def addObserver(self, param):
+        self.observers.append(param)
+
+        global observer
+        observer.addObserver(param)
+    def sendMsg(self,type,data):
+        global observer
+        observer.send(type,data)
+
+    '''
+        删除观察者
+        @param {callback=function(data) end,
+                type="数据类型"
+                }
+    '''
+    def removeObserver(self,param):
+        global observer
+        observer.removeObserver(param)
+
+        _type = param.get("type")
+        _cb = param.get("callback")
+
+        for i in range(len(self.observers)-1,-1,-1):
+            v = self.observers[i]
+            if v.get('type') == _type and v.get("callback") == _cb:
+                del[i]
+                break
+
+    # def Destroy(self):
+    #     global observer
+    #     for v in self.observers:
+    #         observer.removeObserver(v)
+    #     observer = None
+    #     super().Destroy()
 
     def saveCookie(self,name,value,domain,path = '/'):
         if len(name) > 0 and len(value) > 0:
@@ -50,8 +93,8 @@ class UIBase(wx.Frame):
 
 class RefreshCookieUI(UIBase):
 
-    def __init__(self, parent):
-        super().__init__(parent=parent, title=u"重新加载Cookie", size=wx.Size(200, 100))
+    def __init__(self, parent=None,title=u"重新加载Cookie"):
+        super().__init__(parent=parent, title=title, size=wx.Size(200, 100))
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
 
@@ -77,7 +120,8 @@ class RefreshCookieUI(UIBase):
 
 class RefreshCookieView(RefreshCookieUI):
 
-    def __init__(self,session,title=None):
+    def __init__(self,session,title=''):
+        super().__init__(title=title)
         self.session = session
         if title:
             self.SetTitle(title)
@@ -93,7 +137,7 @@ class RunningTaskWindowUI(UIBase):
 
 
         self.SetSizeHintsSz(wx.DefaultSize, wx.DefaultSize)
-        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_CAPTIONTEXT))
+        self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNHIGHLIGHT ) )
 
         bSizer5 = wx.BoxSizer(wx.VERTICAL)
 
@@ -153,6 +197,7 @@ class RunningTaskWindowUI(UIBase):
     def OnLoadCookie( self, event ):
         if event:
             event.Skip()
+
 class RuningTaskWindow(RunningTaskWindowUI):
 
     '''
@@ -203,8 +248,8 @@ class RuningTaskWindow(RunningTaskWindowUI):
     def OnTaskFinished(self, event):
         super().OnTaskFinished(event)
         # 这儿Close会把整个App给停止掉,还未找原因
-        # self.Close(True)
-        self.Hide()
+        self.Close(True)
+        # self.Hide()
 
         if self.setFinishedCB != None:
             self.setFinishedCB()
