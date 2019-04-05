@@ -105,7 +105,7 @@ class TileListWindow(TileListUI):
         # self.SetSize(wx.Size(400,200))
 
         self.taskList = taskList
-        self.taskList.setOwner(self)
+        self.SetTitle(f'{self.taskList.cfg.get("name")}')
 
         self.session = self.taskList.session
         self.refreshAction = self.taskList.am.findGlobalActionByName("RefreshTaskList")
@@ -119,15 +119,6 @@ class TileListWindow(TileListUI):
         self.lastTime = time.time()
         self._initUI()
         self._addObsevers()
-
-
-        # from main.common.vo import RunningTaskData
-        # p = RunningTaskData().fill(
-        #     expire_at = time.time()+500,
-        #     response = None,
-        #     name="test",
-        # )
-        # self.rtLogic.OnAcctedTask(p)
 
     def _initUI(self):
         self.m_statusBar.SetFieldsCount(2)  # 状态栏分成3个区域
@@ -150,30 +141,19 @@ class TileListWindow(TileListUI):
 
     def onTick(self):
         delta = time.time() - self.lastTime
-        self.SetStatusText(self.refreshAction.refreshInfo, 0)  # 给状态栏设文字
         self.rtLogic.tick(delta)
         self.lastTime = time.time()
+
+        if self.rtLogic.hasRunning():
+            self.SetStatusText("正在做任务中......")
+        else:
+            self.SetStatusText(self.refreshAction.refreshInfo, 0)  # 给状态栏设文字
 
     def OnRefreshNow(self,event):
         print("OnRefreshNow------start called.....")
         self.taskList.resetRefresh()
 
 
-    '''
-        param={
-            'expire_at':'到期时间',
-            'setFinishedCB':'设置任务完成回调函数',
-            'name':'任务名称'
-        }
-        '''
-    # def openRunningTaskWindow(self, param):
-    #     param['taskList'] = self.taskList
-    #     if param.get("setFinishedCB") == None:
-    #         param['setFinishedCB'] = self.setFinishedCB
-    #     RuningTaskWindow.create(param).openView()
-
-    # def setFinishedCB(self):
-    #     self.taskList.resetRefresh()
 
     def OnLoadCookie(self,event):
         self.reloadCookie()
@@ -183,6 +163,9 @@ class TileListWindow(TileListUI):
 
     def OnTaskFinished( self, event ):
         self.rtLogic.OnTaskFinished()
+
+    def OnGetReward(self, event):
+        self.rtLogic.OnGetReward()
 
     def Destroy(self):
         super().Destroy()
@@ -203,6 +186,8 @@ class RunningTaskLogic():
 
         self.rtData = None
 
+    def hasRunning(self):
+        return self.rtData != None
 
     def OnAcctedTask(self,param):
         self.rtData = param
@@ -211,6 +196,7 @@ class RunningTaskLogic():
         self.m_stName2.SetLabelText(self.rtData.name)
 
     def OnTaskFinished( self):
+        self.taskList.clearRunningTask()
         self.taskList.resetRefresh()
         self.m_panelRT.Hide()
 
@@ -218,6 +204,10 @@ class RunningTaskLogic():
         observer.send(MSG_TASK_FINISHED)
 
         self.rtData = None
+
+    def OnGetReward(self):
+        res = self.taskList.cfg.getReward()
+        # TODO
 
     def tick(self,delta):
         if self.rtData:

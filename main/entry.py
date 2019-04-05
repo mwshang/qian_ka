@@ -49,8 +49,8 @@ def createEntry(cfg):
 
 def startRun():
     datas = [
-        {"platform": Tryplay_MapzqqCfg, "account": "13439424765"},
-        # {"platform": Tryplay_QianKaCfg, "account": "13439424765"}
+        # {"platform": Tryplay_MapzqqCfg, "account": "13439424765"},
+        {"platform": Tryplay_QianKaCfg, "account": "13439424765"}
     ]
 
     for v in datas:
@@ -64,8 +64,8 @@ if __name__ == '__main__':
     if False:
         startRun()
     else:
-        createEntry(Tryplay_MapzqqCfg("13439424765"))
-        # createEntry(Tryplay_QianKaCfg("13439424765"))
+        # createEntry(Tryplay_MapzqqCfg("13439424765"))
+        createEntry(Tryplay_QianKaCfg("13439424765"))
 
 
     #

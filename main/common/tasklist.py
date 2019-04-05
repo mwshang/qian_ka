@@ -29,7 +29,7 @@ class TaskList(object):# 任务列表基类
         self.session = None
 
         # 正在进行的任务
-        # self.runningTask = None
+        self.runningTask = None
         # 标准任务
         self.stdTasks = []
         # 预告任务
@@ -41,7 +41,6 @@ class TaskList(object):# 任务列表基类
         self.am = ActionManager()
         self.am.start()
 
-        self.owner = None
 
         if self.session == None:
             self._initSession()
@@ -53,8 +52,6 @@ class TaskList(object):# 任务列表基类
         self.session = requests.Session()
         self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
 
-    def setOwner(self,owner):
-        self.owner = owner
 
     def tick(self,delta):
         self.am.tick(delta)
@@ -69,26 +66,24 @@ class TaskList(object):# 任务列表基类
         return self.cfg.acceptTask(self.session,taskId)
 
     def hasRunningTask(self):
-        action =  self.am.findActionByClass(RunningTaskAction)
-        if action and not action.isFinished():
-            return True
-        return False
+        # action =  self.am.findActionByClass(RunningTaskAction)
+        # if action and not action.isFinished():
+        #     return True
+        # return False
+        return self.runningTask != None
+
+    def clearRunningTask(self):
+        self.runningTask = None
 
     def setRunningTask(self, task):
-        if task == None:
-            # self.runningTask = task
-            pass
-        elif task.isRunning():
+        if task:
+            self.runningTask = task
             self.am.clear()
             response = self.getRunningTaskInfo(task.id)
-            if response.error_code == 0:
-                response.task.setRuningStatus()
+            if response.err_code == 0:
+                # response.task.setRuningStatus()
                 global observer
-                observer.send(MSG_ACCEPTED_ATASK,response)
-                    
-
-        else:
-            logger.warning(f"TaskList::setRunningTask task is not a running,id={task.id}")
+                observer.send(MSG_ACCEPTED_ATASK, response)
 
     def getRunningTaskInfo(self,taskId):
         return self.cfg.getRunningTaskInfo(self.session,taskId)
@@ -118,13 +113,10 @@ class TaskList(object):# 任务列表基类
             # 添加预告任务定时器
             self._setIncomingListeners()
         else:
-            logger.warning(f"_handleRefreshResponse refresh task error, error_code={oks[1]} {oks[2]}--->{self.task_list_url}")
+            logger.warning(f"_handleRefreshResponse refresh task error, err_code={oks[1]} {oks[2]}--->{self.task_list_url}")
             # RefreshCookieView(self.session).Show()
 
             observer.send(MSG_UPDATE_TILELIST_STATUS,{'msg':f'请求失败,请刷新Cookie!!!'})
-            #
-            # if hasattr(self.owner,'SetErrorStatusText'):
-            #     self.owner.SetErrorStatusText(f'请求失败,请刷新Cookie!!!')
         return response
     def _responseIsSuccess(self,response):
         err_code = response.get("err_code")

@@ -45,7 +45,7 @@ class QianKaTaskList(TaskList):
             else:
                 arr = self.getQtyGT0Tasks()
                 if len(arr) > 0:
-                    action = QianKaBatchAcceptTaskAction(self,arr)
+                    action = self.cfg.createAcceptTaskAction(self,arr)
                     self.am.addAction(action)
 
     def getQtyGT0Tasks(self):#获取数量大于0的任务
@@ -58,7 +58,7 @@ class QianKaTaskList(TaskList):
 
     # 初始化预告任务
     def _initIncomingTasks(self, tasks):
-        if tasks:
+        if tasks != None:
             self.incomingStartDates = {}
             self.incomingTasks = []
             for task in tasks:
@@ -92,7 +92,7 @@ class QianKaTaskList(TaskList):
         # Caller
         # 到达指定时间后,请求指定的任务
         tasks.sort(key=functools.cmp_to_key(self.sorCallback))
-        action = QianKaBatchAcceptTaskAction(self,tasks)
+        action = self.cfg.createAcceptTaskAction(self, tasks)
         self.am.addAction(action)
 
     # 当数据大于QTY_REWARD_THRESHOLD值时,按奖励倒序排列,否则按数量倒序排序

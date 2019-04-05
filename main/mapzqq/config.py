@@ -3,7 +3,7 @@ from main.common.config import TryplayCfg
 from pickle import dumps,loads
 import json
 import math
-from main.common.vo import ResponseData
+from main.common.vo import ResponseData,RunningTaskData
 
 #鼠宝
 class Tryplay_MapzqqCfg(TryplayCfg):
@@ -22,6 +22,7 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 
     def _getCfg(self):
         cfg = {
+            'name': '鼠宝',
             "TaskList": "main.mapzqq.tasklist.MapzqqTaskList",#任务列表
             "AcceptTaskAction": "main.mapzqq.actions.MapzqqBatchAcceptTaskAction", #接受任务Action
             #刷新任务列表URL
@@ -30,6 +31,9 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 			"accept_url":"http://www.mapzqq-com.com/data/receive-try",
 			#获取运行任务详情URL
 			"detail_url":"http://www.mapzqq-com.com/data/run-task",
+            #领取奖励url
+            'get_reward':'http://www.mapzqq-com.com/info/receive-reward',
+            # cookie文件路径
             "cookie_path": f"cookies/mapzqq_{self.account}.txt",
 			#接受任务时失败重试次数
 			"accept_retry_count":1,
@@ -67,11 +71,12 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         except:
             return ResponseData().fill(status_code=500)
 
-
+    # 刷新任务列表
     def refreshTaskList(self,session):
         url = self.cfg.get("task_list_url")
         return self.request(session,url)
 
+    # 接受任务
     def acceptTask(self,session,taskId):
         url = self.cfg.get("accept_url")
         return self.request(session,url,taskId)
@@ -81,6 +86,7 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         t = t[0:13]
         return t
 
+    # 获取运行任务
     def getRunningTaskInfo(self,session,taskId):
         url = self.cfg.get("detail_url")
         response = self.request(session,url, taskId)
@@ -105,3 +111,9 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 
 
         return rst
+
+    # 获取奖励
+    def getReward(self):
+        response = self.request(self.cfg.get("get_reward"))
+        rd = ResponseData()
+        return rd

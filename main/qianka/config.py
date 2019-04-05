@@ -11,6 +11,7 @@ class Tryplay_QianKaCfg(TryplayCfg):
 
     def _getCfg(self):
         cfg = {
+            'name':'钱咖',
             "TaskList":"main.qianka.tasklist.QianKaTaskList",
             "AcceptTaskAction":"main.qianka.actions.QianKaBatchAcceptTaskAction",
             #刷新任务列表URL
