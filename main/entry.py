@@ -69,8 +69,8 @@ if __name__ == '__main__':
     if False:
         startRun()
     else:
-        createEntry(Tryplay_MapzqqCfg("13439424765"))
-        # createEntry(Tryplay_QianKaCfg("13439424765"))
+        # createEntry(Tryplay_MapzqqCfg("13439424765"))
+        createEntry(Tryplay_QianKaCfg("13439424765"))
 
 
     #
