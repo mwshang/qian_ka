@@ -31,12 +31,13 @@ class QianKaTaskList(TaskList):
             runningTask = None  # 正在进行的任务
 
             for task in tasks:
-                vo = TaskVO()
-                vo.fill(task)
-                if vo.isRunning():
-                    runningTask = vo
-                else:
-                    self.stdTasks.append(vo)
+                if task.get("qty") > 0:
+                    vo = TaskVO()
+                    vo.fill(task)
+                    if vo.isRunning():
+                        runningTask = vo
+                    else:
+                        self.stdTasks.append(vo)
 
             self.stdTasks = sorted(self.stdTasks,key=lambda task:task.qty,reverse=True)
 
@@ -47,6 +48,8 @@ class QianKaTaskList(TaskList):
                 if len(arr) > 0:
                     action = self.cfg.createAcceptTaskAction(self,arr)
                     self.am.addAction(action)
+                else:
+                    print("暂时没有任务可接受!!!")
 
     def getQtyGT0Tasks(self):#获取数量大于0的任务
         rst = []

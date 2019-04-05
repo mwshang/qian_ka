@@ -62,6 +62,8 @@ class MapzqqTaskList(TaskList):
                 if len(arr) > 0:
                     action = self.cfg.createAcceptTaskAction(self,arr)
                     self.am.addAction(action)
+                else:
+                    print("暂时没有任务可接受!!!")
 
     def getQtyGT0Tasks(self):#获取数量大于0的任务
         rst = []

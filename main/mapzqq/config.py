@@ -19,6 +19,14 @@ class Tryplay_MapzqqCfg(TryplayCfg):
             "os": "12.0+",
             "ip": ""
         }
+        #领取奖励参数
+        self.getreward_param = {
+            "sign": "da95fc8f4ef3bbde5f15efe9427abd9a",
+            "format": "json",
+            "customer_id": "20190301zhuniandajiDDDDDc",
+            "timestamp": "1554019942178",
+            "tryid": 55305,
+        }
 
     def _getCfg(self):
         cfg = {
@@ -45,6 +53,8 @@ class Tryplay_MapzqqCfg(TryplayCfg):
             "accept_task_min_delay" : 0.5 ,
             #接受任务最大延迟时间
 			"accept_task_max_delay" : 1.2,
+            #试玩时长,单位秒
+            "tryplay_time":180,
 
 			"headers":{
 				"Host": "www.mapzqq-com.com",
@@ -61,8 +71,15 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 
         return param
 
-    def request(self,session,url,taskId=None):
-        param = self.getParams()
+    def getRewardParams(self,tryid):
+        param = loads(dumps(self.getreward_param))
+        param["timestamp"] = self.getTimestamp()
+        param['tryid'] = tryid
+
+        return param
+
+    def request(self,session,url,taskId=None,param=None):
+        param = self.getParams() if param == None else param
         if taskId != None:
             param["taskId"] = taskId
         try:
@@ -89,6 +106,7 @@ class Tryplay_MapzqqCfg(TryplayCfg):
     # 获取运行任务
     def getRunningTaskInfo(self,session,taskId):
         url = self.cfg.get("detail_url")
+
         response = self.request(session,url, taskId)
         expire_at = 0
         name = ''
@@ -113,7 +131,15 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         return rst
 
     # 获取奖励
-    def getReward(self):
-        response = self.request(self.cfg.get("get_reward"))
-        rd = ResponseData()
+    def getReward(self,session,taskId):
+        param = self.getRewardParams()
+        response = self.request(session,self.cfg.get("get_reward"),param=param)
+        err_code = -1
+        if response.status_code == 200:
+            response = json.loads(response.content)
+            print(response.get("status"))
+            if response.get("status") == 1:
+                err_code = 0
+
+        rd = ResponseData().fill(err_code=err_code,response=response)
         return rd

@@ -31,6 +31,8 @@ class Tryplay_QianKaCfg(TryplayCfg):
             "accept_task_min_delay" : 0.5 ,
             #接受任务最大延迟时间
 			"accept_task_max_delay" : 2,
+            # 试玩时长,单位秒
+            "tryplay_time": 180,
             "headers":{
                 "Host": "qianka.com",
                 "Connection": "keep-alive",

@@ -6,6 +6,7 @@ from main.gui.gui import RuningTaskWindow
 from main.common.constants import *
 import threading
 from main.utils.utils import fmtTime
+import winsound
 
 
 class TileListUI(UIBase):
@@ -41,7 +42,7 @@ class TileListUI(UIBase):
 
         bSizer18 = wx.BoxSizer(wx.VERTICAL)
 
-        self.m_panelRT = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
+        self.m_panelRT = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition, wx.Size(-1, -1), wx.TAB_TRAVERSAL)
         self.m_panelRT.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVEBORDER))
 
         bSizer23 = wx.BoxSizer(wx.VERTICAL)
@@ -64,8 +65,20 @@ class TileListUI(UIBase):
 
         bSizer23.Add(bSizer26, 10, wx.EXPAND, 5)
 
+        bSizer16 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.m_btn3MinCD = wx.Button(self.m_panelRT, wx.ID_ANY, u"开始3钟倒计时", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer16.Add(self.m_btn3MinCD, 0, wx.ALL, 5)
+
+        self.m_st3CD = wx.StaticText(self.m_panelRT, wx.ID_ANY, u"180s", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_st3CD.Wrap(-1)
+        bSizer16.Add(self.m_st3CD, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+
+        bSizer23.Add(bSizer16, 0, wx.EXPAND, 5)
+
         self.m_panelRT.SetSizer(bSizer23)
         self.m_panelRT.Layout()
+        bSizer23.Fit(self.m_panelRT)
         bSizer18.Add(self.m_panelRT, 0, wx.ALL | wx.EXPAND, 5)
 
         bSizer5.Add(bSizer18, 0, 0, 5)
@@ -81,11 +94,13 @@ class TileListUI(UIBase):
         self.m_btnLoadCookie.Bind(wx.EVT_BUTTON, self.OnLoadCookie)
         self.m_btnTaskFinished.Bind(wx.EVT_BUTTON, self.OnTaskFinished)
         self.m_btnGetReward.Bind(wx.EVT_BUTTON, self.OnGetReward)
+        self.m_btn3MinCD.Bind(wx.EVT_BUTTON, self.On3MinCD)
 
     def __del__(self):
         pass
 
-    # Virtual event handlers, overide them in your derived class
+        # Virtual event handlers, overide them in your derived class
+
     def OnRefreshNow(self, event):
         event.Skip()
 
@@ -96,6 +111,9 @@ class TileListUI(UIBase):
         event.Skip()
 
     def OnGetReward(self, event):
+        event.Skip()
+
+    def On3MinCD(self, event):
         event.Skip()
 
 
@@ -127,11 +145,8 @@ class TileListWindow(TileListUI):
 
         # self.m_panelRT.Hide()
 
-
-
     def _addObsevers(self):
         self.addObserver({'type':MSG_UPDATE_TILELIST_STATUS,'callback':self._updateErrorStatusText})
-
 
     def _updateErrorStatusText(self,param):
         self.SetErrorStatusText(param.get("msg"))
@@ -167,6 +182,9 @@ class TileListWindow(TileListUI):
     def OnGetReward(self, event):
         self.rtLogic.OnGetReward()
 
+    def On3MinCD(self, event):
+        self.rtLogic.On3MinCD()
+
     def Destroy(self):
         super().Destroy()
 
@@ -184,10 +202,27 @@ class RunningTaskLogic():
         self.m_stName2 = self.taskListView.m_stName2
         self.m_stEndTime = self.taskListView.m_stEndTime
 
+        self.m_st3CD = self.taskListView.m_st3CD
+        self.m_st3CD.SetLabelText("")
+
+        self.timer3M_CD = wx.Timer()  # 创建定时器
+        self.timer3M_CD.Bind(wx.EVT_TIMER, self.On3MinCDTimer, self.timer3M_CD)  # 绑定一个定时器事件
+        self.cd_endtime = 0
+        self.three3Min = self.taskList.cfg.get("tryplay_time")
+
         self.rtData = None
 
     def hasRunning(self):
         return self.rtData != None
+
+    def On3MinCD(self):
+        self.timer3M_CD.Start(self.three3Min*1000)
+        self.cd_endtime = int(time.time()) + self.three3Min + 1
+
+    def On3MinCDTimer(self,evt):
+        # self.OnGetReward()
+        self.timer3M_CD.Stop()
+        self.OnGetReward()
 
     def OnAcctedTask(self,param):
         self.rtData = param
@@ -195,10 +230,13 @@ class RunningTaskLogic():
 
         self.m_stName2.SetLabelText(self.rtData.name)
 
+        winsound.Beep(440, 2000)
+
     def OnTaskFinished( self):
         self.taskList.clearRunningTask()
         self.taskList.resetRefresh()
         self.m_panelRT.Hide()
+        self.timer3M_CD.Stop()
 
         global observer
         observer.send(MSG_TASK_FINISHED)
@@ -206,8 +244,11 @@ class RunningTaskLogic():
         self.rtData = None
 
     def OnGetReward(self):
-        res = self.taskList.cfg.getReward()
+        print("Start get Reward......")
+        res = self.taskList.getReward()
+        print(res)
         # TODO
+
 
     def tick(self,delta):
         if self.rtData:
@@ -216,4 +257,6 @@ class RunningTaskLogic():
             if t <= 0:
                 self.OnTaskFinished()
 
-
+            cd = int(self.cd_endtime - time.time())
+            cd = max(cd,0)
+            self.m_st3CD.SetLabelText(fmtTime(cd))

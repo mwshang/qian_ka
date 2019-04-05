@@ -12,7 +12,7 @@ from main.gui.tasklistui import TileListWindow
 from main.utils.utils import createInstanceByAbsClass
 
 
-app = wx.App(0)
+
 
 
 class Entry(object):
@@ -44,12 +44,14 @@ class Entry(object):
 
 
 def createEntry(cfg):
+    app = wx.App(0)
     entry = Entry(cfg)
     entry.run()
+    app.MainLoop()
 
 def startRun():
     datas = [
-        # {"platform": Tryplay_MapzqqCfg, "account": "13439424765"},
+        {"platform": Tryplay_MapzqqCfg, "account": "13439424765"},
         {"platform": Tryplay_QianKaCfg, "account": "13439424765"}
     ]
 
@@ -64,12 +66,12 @@ if __name__ == '__main__':
     if False:
         startRun()
     else:
-        # createEntry(Tryplay_MapzqqCfg("13439424765"))
-        createEntry(Tryplay_QianKaCfg("13439424765"))
+        createEntry(Tryplay_MapzqqCfg("13439424765"))
+        # createEntry(Tryplay_QianKaCfg("13439424765"))
 
 
     #
-    app.MainLoop()
+
     print("哎呀哎呀.............MainLoop")
     # 这儿不能去掉,否则进程会结束掉
     # time.sleep(99999)

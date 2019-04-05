@@ -88,6 +88,9 @@ class TaskList(object):# 任务列表基类
     def getRunningTaskInfo(self,taskId):
         return self.cfg.getRunningTaskInfo(self.session,taskId)
 
+    def getReward(self):
+        return self.cfg.getReward(self.session)
+
     def refresh(self):
         logger.debug("start refresh task list ..........")
         self.session.cookies.load()
