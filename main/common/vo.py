@@ -19,6 +19,8 @@ class TaskVO():
         self.status_for_order = 1 #当status=2(正在进行的任务)时,这里为1,当status=1时,这儿显示的是2
         self.end_at = 0
 
+        self.origin = None
+
         self.tags = None
 
     def fill(self,task):
@@ -68,6 +70,7 @@ class Mapzqq_TaskVO(TaskVO):
         super().__init__()
         self.user_id = 0 # customer_id
         self._isRunningTask = False
+        self.rid = 0 # 运行任务ID,领取奖励需要
 
     def fill(self,task):
 
@@ -120,10 +123,12 @@ class RunningTaskData(ResponseData):
         self.task = None
         self.taskId = 0
         self.name = ''
+        self.rid = 0 # 运行任务ID
 
-    def fill(self, status_code=200, err_code=0, expire_at=0, response=None,name='',task=None,taskId=0):
+    def fill(self, status_code=200, err_code=0, expire_at=0, response=None,name='',task=None,taskId=0,rid=0):
         super().fill(status_code,err_code,expire_at,response)
         self.task = task
         self.taskId = taskId
         self.name = name
+        self.rid = rid
         return self

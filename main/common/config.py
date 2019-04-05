@@ -12,9 +12,6 @@ FPS = 12
 PER_FRAME_TIME = 1/FPS # 每一帧的时间
 PRINT_DELTA = FPS * 5
 
-
-COLUMN_NAMES = ["id", "数量", "奖励", "描述"]
-
 observer = Observer()
 
 class TryplayCfg():
@@ -29,12 +26,20 @@ class TryplayCfg():
     def createAcceptTaskAction(self,taskList,datas):
         return createInstanceByAbsClass(self.get("AcceptTaskAction"),taskList, datas)
 
+    def request(self,session,url,headers,data=None,method='get'):#post
+
+        try:
+            if method == 'get':
+                return session.get(url,headers=headers)
+            else:
+                return session.post(url, data=data, headers=headers)
+
+        except:
+            return ResponseData().fill(status_code=500)
+
     def refreshTaskList(self,session):
         url = self.cfg.get("task_list_url")
-        try:
-            return session.get(url, headers=self.headers)
-        except:
-            return {'status_code':500}
+        return self.request(session, url, self.headers, method='get')
 
 
     def acceptTask(self,session,taskId):

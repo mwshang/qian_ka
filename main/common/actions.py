@@ -171,10 +171,12 @@ class BatchExecuteAction(Action):
             # if self._filterExecute(data) == False:
             #     self._executeData(data)
 
-    def _filterExecute(self,data):
-        if self._dicFilter.get(str(data.id)) != None:
-            return True
-        return False
+        self.setFinised(True)
+
+    # def _filterExecute(self,data):
+    #     if self._dicFilter.get(str(data.id)) != None:
+    #         return True
+    #     return False
 
 
     def _isBreakFor(self):
@@ -185,6 +187,8 @@ class BatchExecuteAction(Action):
         while retry > 0:
             if self._isBreakFor():
                 break
+            if not hasattr(data,'id'):
+                print("")
             logger.debug(f"_executeData retry={retry} id={data.id} qty={data.qty}")
             if self._executeData_1(data):
                 break

@@ -7,6 +7,7 @@ from main.common.constants import *
 import threading
 from main.utils.utils import fmtTime
 import winsound
+import functools
 
 
 class TileListUI(UIBase):
@@ -118,12 +119,14 @@ class TileListUI(UIBase):
 
 
 class TileListWindow(TileListUI):
-    def __init__(self,taskList):
+    def __init__(self,taskList,msgQueue):
         super().__init__(None)
         # self.SetSize(wx.Size(400,200))
 
         self.taskList = taskList
         self.SetTitle(f'{self.taskList.cfg.get("name")}')
+
+        self.msgQueue = msgQueue
 
         self.session = self.taskList.session
         self.refreshAction = self.taskList.am.findGlobalActionByName("RefreshTaskList")
@@ -134,6 +137,8 @@ class TileListWindow(TileListUI):
         self.timer = wx.PyTimer(self.onTick)  # 创建定时器
         self.timer.Start(PER_FRAME_TIME * 1000)  # 设置间隔时间
 
+        self.callLater = None
+
         self.lastTime = time.time()
         self._initUI()
         self._addObsevers()
@@ -143,13 +148,30 @@ class TileListWindow(TileListUI):
         self.m_statusBar.SetStatusWidths([-1, -1])  # 区域宽度比列，用负数
         self.m_statusBar.SetStatusText(self.refreshAction.refreshInfo, 0)  # 给状态栏设文字
 
-        # self.m_panelRT.Hide()
 
     def _addObsevers(self):
         self.addObserver({'type':MSG_UPDATE_TILELIST_STATUS,'callback':self._updateErrorStatusText})
+        self.addObserver({'type': MSG_ADD_INCOMMING_LISTENER, 'callback': self._addIncommingListener})
+
 
     def _updateErrorStatusText(self,param):
         self.SetErrorStatusText(param.get("msg"))
+
+    def _addIncommingListener(self,param):
+        args = param.get('args')
+        tasks = args[0]
+        sec = args[1]
+
+        if self.callLater == None:
+            self.callLater = wx.CallLater(sec * 1000,self.OnAcceptTasks,tasks)
+        else:
+            self.callLater.Restart(sec * 1000, tasks)
+
+
+    def OnAcceptTasks(self,tasks):
+        action = self.taskList.cfg.createAcceptTaskAction(self.taskList, tasks)
+        self.taskList.am.addAction(action)
+
 
     def SetErrorStatusText(self, text):
         self.SetStatusText(text,1)  # 给状态栏设文字
@@ -163,6 +185,11 @@ class TileListWindow(TileListUI):
             self.SetStatusText("正在做任务中......")
         else:
             self.SetStatusText(self.refreshAction.refreshInfo, 0)  # 给状态栏设文字
+
+        if not self.msgQueue.empty():
+            p = self.msgQueue.get()
+            if p.get('name') == MSG_INCOMMING_HANDLE:
+                self._addIncommingListener(p)
 
     def OnRefreshNow(self,event):
         print("OnRefreshNow------start called.....")

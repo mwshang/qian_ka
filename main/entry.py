@@ -6,7 +6,7 @@ from multiprocessing import Process
 from main.mapzqq.config import Tryplay_MapzqqCfg
 from main.qianka.config import Tryplay_QianKaCfg
 from main.gui.tasklistui import TileListWindow
-
+import queue
 
 
 from main.utils.utils import createInstanceByAbsClass
@@ -18,12 +18,15 @@ from main.utils.utils import createInstanceByAbsClass
 class Entry(object):
     def __init__(self,cfg):
         self.cfg = cfg
+        self.msgQueue = queue.Queue()
         self._initPlatforms()
 
 
     def _initPlatforms(self):
         self.taskList = createInstanceByAbsClass(self.cfg.get("TaskList"), self.cfg)
-        self.taskListView = TileListWindow(self.taskList)
+        self.taskList.msgQueue = self.msgQueue
+
+        self.taskListView = TileListWindow(self.taskList,self.msgQueue)
         self.taskListView.Show()
 
         logic_thread = threading.Thread(target=self.taskListThread)

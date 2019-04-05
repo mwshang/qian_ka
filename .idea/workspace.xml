@@ -8,15 +8,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b821d4d0-e2c8-4e50-b492-04338dc76fe9" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/main/common/actions.py" afterPath="$PROJECT_DIR$/main/common/actions.py" />
+      <change beforePath="$PROJECT_DIR$/main/common/config.py" afterPath="$PROJECT_DIR$/main/common/config.py" />
+      <change beforePath="$PROJECT_DIR$/main/common/constants.py" afterPath="$PROJECT_DIR$/main/common/constants.py" />
       <change beforePath="$PROJECT_DIR$/main/common/tasklist.py" afterPath="$PROJECT_DIR$/main/common/tasklist.py" />
+      <change beforePath="$PROJECT_DIR$/main/common/vo.py" afterPath="$PROJECT_DIR$/main/common/vo.py" />
+      <change beforePath="$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt" afterPath="$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt" />
       <change beforePath="$PROJECT_DIR$/main/cookies/qianka_13439424765.txt" afterPath="$PROJECT_DIR$/main/cookies/qianka_13439424765.txt" />
       <change beforePath="$PROJECT_DIR$/main/entry.py" afterPath="$PROJECT_DIR$/main/entry.py" />
+      <change beforePath="$PROJECT_DIR$/main/gui/gui.py" afterPath="$PROJECT_DIR$/main/gui/gui.py" />
       <change beforePath="$PROJECT_DIR$/main/gui/tasklistui.py" afterPath="$PROJECT_DIR$/main/gui/tasklistui.py" />
+      <change beforePath="$PROJECT_DIR$/main/gui/tttt.py" afterPath="$PROJECT_DIR$/main/gui/tttt.py" />
       <change beforePath="$PROJECT_DIR$/main/mapzqq/config.py" afterPath="$PROJECT_DIR$/main/mapzqq/config.py" />
       <change beforePath="$PROJECT_DIR$/main/mapzqq/tasklist.py" afterPath="$PROJECT_DIR$/main/mapzqq/tasklist.py" />
+      <change beforePath="$PROJECT_DIR$/main/qianka/actions.py" afterPath="$PROJECT_DIR$/main/qianka/actions.py" />
       <change beforePath="$PROJECT_DIR$/main/qianka/config.py" afterPath="$PROJECT_DIR$/main/qianka/config.py" />
       <change beforePath="$PROJECT_DIR$/main/qianka/tasklist.py" afterPath="$PROJECT_DIR$/main/qianka/tasklist.py" />
-      <change beforePath="$PROJECT_DIR$/ui/qianka.fbp" afterPath="$PROJECT_DIR$/ui/qianka.fbp" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,12 +38,12 @@
     <SUITE FILE_PATH="coverage/qianka$qianka.coverage" NAME="qianka Coverage Results" MODIFIED="1554031719527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/qian_ka$observer.coverage" NAME="observer Coverage Results" MODIFIED="1554350492570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main/common" />
     <SUITE FILE_PATH="coverage/qianka$subtask_list.coverage" NAME="subtask_list Coverage Results" MODIFIED="1553774980762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main" />
-    <SUITE FILE_PATH="coverage/qianka$entry.coverage" NAME="entry Coverage Results" MODIFIED="1554435764908" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main" />
+    <SUITE FILE_PATH="coverage/qianka$entry.coverage" NAME="entry Coverage Results" MODIFIED="1554465212308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main" />
     <SUITE FILE_PATH="coverage/qian_ka$entry.coverage" NAME="entry Coverage Results" MODIFIED="1554369013421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main" />
     <SUITE FILE_PATH="coverage/qianka$constants.coverage" NAME="constants Coverage Results" MODIFIED="1554171319834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main/common" />
-    <SUITE FILE_PATH="coverage/qianka$tttt.coverage" NAME="tttt Coverage Results" MODIFIED="1554198785088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main/gui" />
     <SUITE FILE_PATH="coverage/qian_ka$tttt.coverage" NAME="tttt Coverage Results" MODIFIED="1554285138756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main/gui" />
     <SUITE FILE_PATH="coverage/qianka$learn_gui.coverage" NAME="learn_gui Coverage Results" MODIFIED="1553996023256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main" />
+    <SUITE FILE_PATH="coverage/qianka$tttt.coverage" NAME="tttt Coverage Results" MODIFIED="1554456375929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main/gui" />
     <SUITE FILE_PATH="coverage/qianka$gui.coverage" NAME="gui Coverage Results" MODIFIED="1554007504259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main" />
   </component>
   <component name="DatabaseView">
@@ -56,11 +63,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="tasklistui.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tasklistui.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/gui/tasklistui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="204" column="48" lean-forward="true" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="48" />
+            <state relative-caret-position="76">
+              <caret line="209" column="14" lean-forward="false" selection-start-line="209" selection-start-column="14" selection-end-line="209" selection-end-column="14" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -68,41 +75,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="winsound.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/winsound.py">
+      <file leaf-file-name="observer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main/common/observer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
+            <state relative-caret-position="102">
+              <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="entry.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/entry.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="core.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python/Python36-32/Lib/site-packages/wx/core.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="2165" column="0" lean-forward="false" selection-start-line="2165" selection-start-column="0" selection-end-line="2165" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main/mapzqq/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="47" column="25" lean-forward="false" selection-start-line="47" selection-start-column="25" selection-end-line="47" selection-end-column="25" />
+            <state relative-caret-position="132">
+              <caret line="139" column="39" lean-forward="true" selection-start-line="139" selection-start-column="39" selection-end-line="139" selection-end-column="39" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -113,8 +100,8 @@
       <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/qianka/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="32" column="40" lean-forward="false" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
+            <state relative-caret-position="100">
+              <caret line="73" column="16" lean-forward="false" selection-start-line="73" selection-start-column="16" selection-end-line="73" selection-end-column="16" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -123,11 +110,13 @@
         </entry>
       </file>
       <file leaf-file-name="tasklist.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/qianka/tasklist.py">
+        <entry file="file://$PROJECT_DIR$/main/common/tasklist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="47" column="32" lean-forward="false" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="453">
+              <caret line="80" column="51" lean-forward="false" selection-start-line="80" selection-start-column="51" selection-end-line="80" selection-end-column="51" />
+              <folding>
+                <element signature="e#1#16#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -135,10 +124,32 @@
       <file leaf-file-name="tasklist.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/mapzqq/tasklist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="97" column="30" lean-forward="false" selection-start-line="97" selection-start-column="30" selection-end-line="97" selection-end-column="30" />
+            <state relative-caret-position="184">
+              <caret line="60" column="30" lean-forward="true" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
               <folding>
-                <element signature="e#2002#2127#0" expanded="false" />
+                <element signature="e#2072#2197#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mapzqq_13439424765.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="50">
+              <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="entry.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main/entry.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="268">
+              <caret line="72" column="53" lean-forward="true" selection-start-line="72" selection-start-column="53" selection-end-line="72" selection-end-column="53" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -147,20 +158,20 @@
       <file leaf-file-name="vo.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main/common/vo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="109" column="42" lean-forward="false" selection-start-line="109" selection-start-column="34" selection-end-line="109" selection-end-column="42" />
+            <state relative-caret-position="89">
+              <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="tasklist.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main/common/tasklist.py">
+        <entry file="file://$PROJECT_DIR$/main/qianka/tasklist.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+            <state relative-caret-position="78">
+              <caret line="96" column="74" lean-forward="false" selection-start-line="96" selection-start-column="74" selection-end-line="96" selection-end-column="74" />
               <folding>
-                <element signature="e#1#16#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -177,36 +188,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>refresh</find>
-      <find>RuningTaskWindow</find>
-      <find>SetErrorStatusText</find>
-      <find>Destroy</find>
-      <find>threading</find>
-      <find>MSG_ACCEPTED_ATASK</find>
-      <find>t_start</find>
-      <find>onTick</find>
-      <find>_onAcctedTask</find>
-      <find>m_btnTaskFinished</find>
-      <find>setFinishedCB</find>
-      <find>openRunningTaskWindow</find>
-      <find>setTaskFinished</find>
-      <find>OnOpenRTWindow</find>
-      <find>m_stName2</find>
-      <find>MSG_TASK_FINISHED</find>
-      <find>fmtTime</find>
-      <find>m_stEndTime</find>
-      <find>OnTaskFinished</find>
-      <find>TileListUI</find>
       <find>refreshInfo</find>
       <find>runningTask</find>
       <find>owner</find>
       <find>tick</find>
       <find>getQtyGT0Tasks</find>
-      <find>OnGetReward</find>
-      <find>request</find>
       <find>On3MinCD</find>
-      <find>getRewardParams</find>
       <find>Timer</find>
+      <find>getRewardParams</find>
+      <find>request</find>
+      <find>RunningTaskData</find>
+      <find>acceptTask</find>
+      <find>start refresh task list</find>
+      <find>incomingListeners</find>
+      <find>_clearIncomingListeners</find>
+      <find>incomingTasks</find>
+      <find>self._incTasks</find>
+      <find>_executeData_1</find>
+      <find>sorCallback</find>
+      <find>pub</find>
+      <find>TestThread</find>
+      <find>onTick</find>
+      <find>key</find>
+      <find>_filterExecute</find>
+      <find>onIncommingTimeout</find>
+      <find>_incTasks</find>
+      <find>callLater</find>
+      <find>_addIncommingListener</find>
+      <find>incomingStartDates</find>
+      <find>OnGetReward</find>
+      <find>_setIncomingListeners</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -231,29 +242,29 @@
         <option value="$PROJECT_DIR$/main/config.py" />
         <option value="$PROJECT_DIR$/main/tasklist.py" />
         <option value="$PROJECT_DIR$/main/actions.py" />
-        <option value="$PROJECT_DIR$/main/qianka/actions.py" />
         <option value="$PROJECT_DIR$/main/utils/utils.py" />
         <option value="$PROJECT_DIR$/main/common/actionmanager.py" />
         <option value="$PROJECT_DIR$/main/mapzqq/actions.py" />
         <option value="$PROJECT_DIR$/main/gui/uihelper.py" />
         <option value="$PROJECT_DIR$/main/net.py" />
-        <option value="$PROJECT_DIR$/main/common/vo.py" />
-        <option value="$PROJECT_DIR$/main/gui/tttt.py" />
+        <option value="$PROJECT_DIR$/main/common/observer.py" />
+        <option value="$PROJECT_DIR$/main/common/lan.py" />
         <option value="$PROJECT_DIR$/main/common/config.py" />
         <option value="$PROJECT_DIR$/main/gui/gui.py" />
-        <option value="$PROJECT_DIR$/main/common/constants.py" />
-        <option value="$PROJECT_DIR$/main/common/observer.py" />
-        <option value="$PROJECT_DIR$/main/common/actions.py" />
-        <option value="$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt" />
-        <option value="$PROJECT_DIR$/main/common/lan.py" />
-        <option value="$PROJECT_DIR$/main/qianka/tasklist.py" />
-        <option value="$PROJECT_DIR$/main/mapzqq/tasklist.py" />
+        <option value="$PROJECT_DIR$/main/qianka/actions.py" />
         <option value="$PROJECT_DIR$/main/cookies/qianka_13439424765.txt" />
+        <option value="$PROJECT_DIR$/main/gui/tttt.py" />
+        <option value="$PROJECT_DIR$/main/qianka/config.py" />
+        <option value="$PROJECT_DIR$/main/common/actions.py" />
+        <option value="$PROJECT_DIR$/main/common/constants.py" />
+        <option value="$PROJECT_DIR$/main/gui/tasklistui.py" />
+        <option value="$PROJECT_DIR$/main/qianka/tasklist.py" />
         <option value="$PROJECT_DIR$/main/entry.py" />
+        <option value="$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt" />
+        <option value="$PROJECT_DIR$/main/mapzqq/tasklist.py" />
+        <option value="$PROJECT_DIR$/main/common/vo.py" />
         <option value="$PROJECT_DIR$/main/common/tasklist.py" />
         <option value="$PROJECT_DIR$/main/mapzqq/config.py" />
-        <option value="$PROJECT_DIR$/main/qianka/config.py" />
-        <option value="$PROJECT_DIR$/main/gui/tasklistui.py" />
       </list>
     </option>
   </component>
@@ -324,12 +335,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="mapzqq" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="qianka" type="b2602c69:ProjectViewProjectNode" />
-              <item name="qianka" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="qianka" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -343,14 +348,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\workspace\qianka\main\cookies" />
-      <recent name="G:\workspace\qianka\main" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="G:\workspace\qianka\main\gui" />
       <recent name="G:\workspace\qianka\main\common" />
       <recent name="G:\workspace\qianka\main\utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\workspace\qianka\main\cookies" />
+      <recent name="G:\workspace\qianka\main" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -471,8 +476,8 @@
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.entry" />
-        <item index="1" class="java.lang.String" itemvalue="Python.observer" />
-        <item index="2" class="java.lang.String" itemvalue="Python.tttt" />
+        <item index="1" class="java.lang.String" itemvalue="Python.tttt" />
+        <item index="2" class="java.lang.String" itemvalue="Python.observer" />
         <item index="3" class="java.lang.String" itemvalue="Python.constants" />
         <item index="4" class="java.lang.String" itemvalue="Python.gui (1)" />
       </list>
@@ -503,13 +508,13 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14123867" sideWeight="0.70877945" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19108762" sideWeight="0.67330676" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18429004" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18429004" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15936556" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24590164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2688822" sideWeight="0.29122055" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5885246" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19108762" sideWeight="0.32669324" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -536,18 +541,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main/gui/gui.py</url>
-          <line>72</line>
+          <line>71</line>
           <option name="timeStamp" value="275" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main/common/actions.py</url>
-          <line>174</line>
+          <line>176</line>
           <option name="timeStamp" value="280" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/gui/tttt.py</url>
-          <line>39</line>
-          <option name="timeStamp" value="314" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main/common/actions.py</url>
@@ -561,43 +561,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main/gui/gui.py</url>
-          <line>259</line>
+          <line>258</line>
           <option name="timeStamp" value="364" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main/gui/gui.py</url>
-          <line>258</line>
+          <line>257</line>
           <option name="timeStamp" value="365" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/qianka/tasklist.py</url>
-          <line>96</line>
-          <option name="timeStamp" value="376" />
+          <url>file://$PROJECT_DIR$/main/qianka/config.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="406" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/qianka/actions.py</url>
-          <line>30</line>
-          <option name="timeStamp" value="378" />
+          <url>file://$PROJECT_DIR$/main/common/actions.py</url>
+          <line>190</line>
+          <option name="timeStamp" value="435" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/qianka/actions.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="380" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/mapzqq/config.py</url>
-          <line>137</line>
-          <option name="timeStamp" value="384" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/mapzqq/config.py</url>
-          <line>143</line>
-          <option name="timeStamp" value="385" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main/mapzqq/config.py</url>
-          <line>88</line>
-          <option name="timeStamp" value="386" />
+          <url>file://$PROJECT_DIR$/main/qianka/config.py</url>
+          <line>75</line>
+          <option name="timeStamp" value="444" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -607,16 +592,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="394" />
+      <option name="time" value="453" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/wx/_core/Frame.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/wx/_core/Panel.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/wx/_core/TopLevelWindow.py" />
-    <entry file="file://$PROJECT_DIR$/main/qianka_13439424765.txt" />
-    <entry file="file://$PROJECT_DIR$/main/qianka.txt" />
     <entry file="file://$PROJECT_DIR$/main/cookies/qianka_15630631006.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="129">
@@ -666,7 +646,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python/Python36-32/Lib/threading.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/python-skeletons/multiprocessing/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -684,14 +663,6 @@
     </entry>
     <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/wx/_core/BoxSizer.py" />
     <entry file="file://C:/Python/Python36-32/Lib/datetime.py" />
-    <entry file="file://$PROJECT_DIR$/main/utils/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python/Python36-32/Lib/http/cookiejar.py" />
     <entry file="file://$PROJECT_DIR$/main/mapzqq/actions.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -725,72 +696,12 @@
     <entry file="file://$USER_HOME$/.PyCharm2017.2/system/python_stubs/-1828343329/wx/_core/PyCommandEvent.py" />
     <entry file="file://$USER_HOME$/.PyCharm2017.2/system/python_stubs/-1828343329/wx/_core/Window.py" />
     <entry file="file://$USER_HOME$/.PyCharm2017.2/system/python_stubs/-1828343329/builtins.py" />
-    <entry file="file://$PROJECT_DIR$/main/common/actionmanager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://G:/warship2/client/inchina/trunk/Tank/res/core_res/img/optimize/effect_refit_improve/effect_refit_improve0001.plist" />
-    <entry file="file://$PROJECT_DIR$/main/common/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="6" column="17" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/wx/core.py" />
-    <entry file="file://$PROJECT_DIR$/main/common/observer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="133" column="0" lean-forward="true" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main/common/lan.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/common/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="28" column="21" lean-forward="true" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
-          <folding>
-            <element signature="e#1#31#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/common/actions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="65" column="22" lean-forward="true" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/gui/tttt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -805,21 +716,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/gui/gui.py">
+    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/winsound.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="70">
+          <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/qianka/actions.py">
+    <entry file="file://C:/Python/Python36-32/Lib/threading.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="31" column="34" lean-forward="false" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="34" />
+        <state relative-caret-position="118">
+          <caret line="1181" column="0" lean-forward="false" selection-start-line="1181" selection-start-column="0" selection-end-line="1181" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/gui/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4525">
+          <caret line="8" column="30" lean-forward="true" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -831,92 +750,202 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/qianka/tasklist.py">
+    <entry file="file://C:/Python/Python36-32/Lib/site-packages/wx/lib/pubsub/pub.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="47" column="32" lean-forward="false" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+        <state relative-caret-position="106">
+          <caret line="128" column="22" lean-forward="true" selection-start-line="128" selection-start-column="22" selection-end-line="128" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/entry.py">
+    <entry file="file://C:/Python/Python36-32/Lib/site-packages/wx/lib/pubsub/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        <state relative-caret-position="119">
+          <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/gui/tttt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="52" column="13" lean-forward="true" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="1071" column="0" lean-forward="false" selection-start-line="1071" selection-start-column="0" selection-end-line="1071" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/utils/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/common/actionmanager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/common/actions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="193" column="21" lean-forward="true" selection-start-line="193" selection-start-column="21" selection-end-line="193" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/common/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="30" column="12" lean-forward="true" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/qianka/actions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/common/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/wx/_core/Timer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="77" column="8" lean-forward="false" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/Python/Python36-32/Lib/site-packages/wx/core.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="2165" column="0" lean-forward="false" selection-start-line="2165" selection-start-column="0" selection-end-line="2165" selection-end-column="0" />
+        <state relative-caret-position="123">
+          <caret line="3307" column="8" lean-forward="false" selection-start-line="3307" selection-start-column="8" selection-end-line="3307" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/common/vo.py">
+    <entry file="file://$PROJECT_DIR$/main/common/observer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="109" column="42" lean-forward="false" selection-start-line="109" selection-start-column="34" selection-end-line="109" selection-end-column="42" />
+        <state relative-caret-position="102">
+          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/common/tasklist.py">
+    <entry file="file://$PROJECT_DIR$/main/qianka/tasklist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+        <state relative-caret-position="78">
+          <caret line="96" column="74" lean-forward="false" selection-start-line="96" selection-start-column="74" selection-end-line="96" selection-end-column="74" />
           <folding>
-            <element signature="e#1#16#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main/mapzqq/tasklist.py">
+    <entry file="file://$PROJECT_DIR$/main/entry.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="97" column="30" lean-forward="false" selection-start-line="97" selection-start-column="30" selection-end-line="97" selection-end-column="30" />
+        <state relative-caret-position="268">
+          <caret line="72" column="53" lean-forward="true" selection-start-line="72" selection-start-column="53" selection-end-line="72" selection-end-column="53" />
           <folding>
-            <element signature="e#2002#2127#0" expanded="false" />
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/gui/tasklistui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="209" column="14" lean-forward="false" selection-start-line="209" selection-start-column="14" selection-end-line="209" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main/qianka/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="32" column="40" lean-forward="false" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
+        <state relative-caret-position="100">
+          <caret line="73" column="16" lean-forward="false" selection-start-line="73" selection-start-column="16" selection-end-line="73" selection-end-column="16" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/common/vo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/mapzqq/tasklist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="60" column="30" lean-forward="true" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+          <folding>
+            <element signature="e#2072#2197#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/cookies/mapzqq_13439424765.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/common/tasklist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="453">
+          <caret line="80" column="51" lean-forward="false" selection-start-line="80" selection-start-column="51" selection-end-line="80" selection-end-column="51" />
+          <folding>
+            <element signature="e#1#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main/mapzqq/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="47" column="25" lean-forward="false" selection-start-line="47" selection-start-column="25" selection-end-line="47" selection-end-column="25" />
+        <state relative-caret-position="132">
+          <caret line="139" column="39" lean-forward="true" selection-start-line="139" selection-start-column="39" selection-end-line="139" selection-end-column="39" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-836061827/winsound.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main/gui/tasklistui.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="204" column="48" lean-forward="true" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

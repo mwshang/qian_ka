@@ -9,6 +9,7 @@ from main.common.actions import RunningTaskAction,RefreshTaskList
 from main.common.config import *
 from main.gui.gui import RefreshCookieView
 from main.common.constants import *
+import wx
 
 logging.basicConfig(level = logging.INFO,format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -41,17 +42,17 @@ class TaskList(object):# 任务列表基类
         self.am = ActionManager()
         self.am.start()
 
+        self.msgQueue = None
+
 
         if self.session == None:
             self._initSession()
 
         self.am.addGlobalAction(RefreshTaskList(self))
 
-
     def _initSession(self):
-        self.session = requests.Session()
-        self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
-
+            self.session = requests.Session()
+            self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
 
     def tick(self,delta):
         self.am.tick(delta)
@@ -66,10 +67,6 @@ class TaskList(object):# 任务列表基类
         return self.cfg.acceptTask(self.session,taskId)
 
     def hasRunningTask(self):
-        # action =  self.am.findActionByClass(RunningTaskAction)
-        # if action and not action.isFinished():
-        #     return True
-        # return False
         return self.runningTask != None
 
     def clearRunningTask(self):
@@ -81,6 +78,7 @@ class TaskList(object):# 任务列表基类
             self.am.clear()
             response = self.getRunningTaskInfo(task.id)
             if response.err_code == 0:
+                self.runningTask.rid = response.rid
                 # response.task.setRuningStatus()
                 global observer
                 observer.send(MSG_ACCEPTED_ATASK, response)
@@ -89,7 +87,7 @@ class TaskList(object):# 任务列表基类
         return self.cfg.getRunningTaskInfo(self.session,taskId)
 
     def getReward(self):
-        return self.cfg.getReward(self.session)
+        return self.cfg.getReward(self.session,self.runningTask.rid)
 
     def refresh(self):
         logger.debug("start refresh task list ..........")

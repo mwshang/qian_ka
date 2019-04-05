@@ -5,12 +5,14 @@ import threading
 from main.common.tasklist import TaskList
 from main.common.vo import TaskVO,IncomingTaskVO
 from main.qianka.actions import QianKaBatchAcceptTaskAction
-
+from main.common.constants import *
+from main.common.config import observer
 
 # 钱咖任务列表
 class QianKaTaskList(TaskList):
     def __init__(self,cfg):
         super().__init__(cfg)
+        self._incTasks = None
 
     def tick(self,delta):
         super().tick(delta)
@@ -31,7 +33,7 @@ class QianKaTaskList(TaskList):
             runningTask = None  # 正在进行的任务
 
             for task in tasks:
-                if task.get("qty") > 0:
+                if task.get("qty") > 0 or task.get('status') == 2:
                     vo = TaskVO()
                     vo.fill(task)
                     if vo.isRunning():
@@ -71,7 +73,7 @@ class QianKaTaskList(TaskList):
                 sdKey = vo.getStartDateKey()
                 if self.incomingStartDates.get(sdKey) == None:
                     self.incomingStartDates[sdKey] = []
-                self.incomingStartDates[sdKey].append({'task': vo})
+                self.incomingStartDates[sdKey].append(vo)
 
             self.incomingTasks = sorted(self.incomingTasks, key=lambda task: task.getStartDateKey())
 
@@ -86,18 +88,31 @@ class QianKaTaskList(TaskList):
                 nt = time.mktime(time.strptime(nextStr, '%Y-%m-%d %H:%M:%S'))
                 dt = nt - time.time()
                 if dt > 0:
-                    timer = threading.Timer(dt, self._timerCB, (tasks, k))
-                    timer.setDaemon(True)
-                    timer.start()
-                    self.incomingListeners.append({'timer': timer, "key": k})
+                    # timer = threading.Timer(dt, self._timerCB, (tasks, k))
+                    # timer.setDaemon(True)
+                    # timer.start()
+                    # self.incomingListeners.append({'timer': timer, "key": k})
+                    self.msgQueue.put({'name':MSG_INCOMMING_HANDLE,'args':(tasks,dt)})
+                    # global observer
+                    # observer.send(MSG_ADD_INCOMMING_LISTENER,(tasks,dt))
+                    break
 
     def _timerCB(self,tasks,key):
-        # Caller
         # 到达指定时间后,请求指定的任务
+        print("start calling....")
+
         tasks.sort(key=functools.cmp_to_key(self.sorCallback))
         action = self.cfg.createAcceptTaskAction(self, tasks)
         self.am.addAction(action)
 
+
+    '''
+    def onIncommingTimeout(self,evt):
+        super().onIncommingTimeout(evt)
+        self._incTasks.sort(key=functools.cmp_to_key(self.sorCallback))
+        action = self.cfg.createAcceptTaskAction(self, self._incTasks)
+        self.am.addAction(action)
+     '''
     # 当数据大于QTY_REWARD_THRESHOLD值时,按奖励倒序排列,否则按数量倒序排序
     def sorCallback(self,t1, t2):
         a = t1.get("task")

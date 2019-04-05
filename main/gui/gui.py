@@ -1,7 +1,6 @@
 import wx
 import time
 from wx.grid import GridTableBase
-from main.common.config import COLUMN_NAMES
 import http.cookiejar as cookielib
 from main.utils.utils import fmtTime
 from main.common.config import observer

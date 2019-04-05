@@ -21,7 +21,7 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         }
         #领取奖励参数
         self.getreward_param = {
-            "sign": "da95fc8f4ef3bbde5f15efe9427abd9a",
+            "sign": "c6be1d08aa7df53c500a4f223088da67",
             "format": "json",
             "customer_id": "20190301zhuniandajiDDDDDc",
             "timestamp": "1554019942178",
@@ -50,7 +50,7 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 			#刷任务列表间隔时间最大值
 			"refresh_tasklist_delta_max" : 300,
 			#接受任务最小延迟时间
-            "accept_task_min_delay" : 0.5 ,
+            "accept_task_min_delay" : 1 ,
             #接受任务最大延迟时间
 			"accept_task_max_delay" : 1.2,
             #试玩时长,单位秒
@@ -110,12 +110,14 @@ class Tryplay_MapzqqCfg(TryplayCfg):
         response = self.request(session,url, taskId)
         expire_at = 0
         name = ''
+        rid = 0
         if response.status_code == 200:
             response = json.loads(response.content)
 
             err_code = response.get("status")
             if err_code == 1:
                 data = response.get("data")
+                rid = data.get('id')
                 task = data.get("task")
                 if task:
                     # expire_at =  task.get("endTime")
@@ -126,18 +128,18 @@ class Tryplay_MapzqqCfg(TryplayCfg):
 
         code = 0 if err_code == 1 else err_code
         rst = RunningTaskData().fill(expire_at=expire_at,response=response,task=task,taskId=taskId,name=name,err_code=code)
-
+        rst.rid = rid
 
         return rst
 
     # 获取奖励
     def getReward(self,session,taskId):
-        param = self.getRewardParams()
+        param = self.getRewardParams(taskId)
         response = self.request(session,self.cfg.get("get_reward"),param=param)
         err_code = -1
         if response.status_code == 200:
             response = json.loads(response.content)
-            print(response.get("status"))
+            print(f'{response.get("msg")}')
             if response.get("status") == 1:
                 err_code = 0
 

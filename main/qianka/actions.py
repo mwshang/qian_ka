@@ -43,8 +43,8 @@ class QianKaBatchAcceptTaskAction(BatchExecuteAction):
                 self.taskList.setRunningTask(task)
                 logger.debug(f"成功接受任务:id={task.id} qty={task.qty}")
                 rst = True
-            elif type == 3:#被封号了
-                logger.debug(f"恭喜你中奖被封号了!!!!!!!!")
+            elif type == 3:#
+                logger.debug(f"授受任务失败!!!!!!!!")
                 rst = True
             else:
                 logger.debug(f"_acceptTask:unhandled type={type}")

@@ -41,6 +41,7 @@ class MapzqqTaskList(TaskList):
                     continue
                 vo = Mapzqq_TaskVO()
                 vo.fill(task)
+                vo.origin = task
                 if vo.isRunning():
                     runningTask = vo
                 else:
@@ -53,6 +54,7 @@ class MapzqqTaskList(TaskList):
                 if cTry != None:
                     vo = Mapzqq_TaskVO()
                     vo.fillRuningTask(cTry)
+                    vo.origin = cTry
                     runningTask = vo
 
             if runningTask:

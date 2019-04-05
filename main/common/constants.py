@@ -5,3 +5,8 @@ MSG_UPDATE_TILELIST_STATUS = "msg_update_tilelist_status"
 MSG_ACCEPTED_ATASK = "msg_acceptedATask"
 # 任务完成
 MSG_TASK_FINISHED = "msg_taskFinished"
+
+MSG_ADD_INCOMMING_LISTENER = "addIncommingListener"
+
+#
+MSG_INCOMMING_HANDLE = "incomming_handle"
